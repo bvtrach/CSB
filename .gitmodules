@@ -1,0 +1,6 @@
+[submodule "deps/benchkit"]
+	path = deps/benchkit
+	url = https://github.com/open-s4c/benchkit.git
+[submodule "deps/FlameGraph"]
+	path = deps/FlameGraph
+	url = https://github.com/brendangregg/FlameGraph

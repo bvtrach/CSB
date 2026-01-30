@@ -1,0 +1,53 @@
+$_map(UNLESS_true, $_nl$_kill);
+$_map(UNLESS_false, );
+$_map(LAST, $_islast);
+{
+	"plots": [
+		{
+			"x": "container_cnt",
+			"x_lbl": "#Containers",
+			"y": "throughput_min",
+			"y_lbl": "Throughput",
+			"hue_lbl": "Executer",
+			"hue": "execution_unit",
+			"shape": "barplot",
+			"title" : "Throughput vs. #Containers"
+		},
+		{
+			"x": "container_cnt",
+			"x_lbl": "#Containers",
+			"y": "throughput_min",
+			"y_lbl": "Throughput",
+			"hue": "execution_type",
+			"hue_lbl": "Execution Env",
+			"title": "Linearity vs. #Containers",
+			"type": "linearity"
+		}
+	],
+	"benchmark_config" : {
+		"duration": 20,
+		"threads": {
+			"values":
+			[
+				{"min": 1, "step": 2, "max": 10}
+			]
+		}
+	},
+	"containers": {
+		"container_list":
+		{
+			"values": [
+$_begin(NPROCS = [[1; 2]]);
+				[NPROCS]
+$_end();
+		]},
+		"core_count": 1,
+		"image": "ubuntu:latest",
+		"name" : "syz_proc_container"
+    },
+    "applications": [
+$_begin(NN = [[1; 2]]);
+            {"name": "NN", "operations": [1024]}UNLESS_LAST,
+$_end();
+    ]
+}

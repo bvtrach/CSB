@@ -1,0 +1,7 @@
+pandas
+seaborn
+matplotlib
+dominate
+docker
+jsonpath_ng
+psutil
