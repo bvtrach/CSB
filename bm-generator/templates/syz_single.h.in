@@ -182,17 +182,31 @@ $_begin(NN = [[1; 2]]);
 
     assert(ctx->mmap_offsets_NN_prog);
 
-    struct sockaddr_in* saddr_con = (struct sockaddr_in*) malloc(sizeof(struct sockaddr_in));
-    ctx->connect_arg_NN_prog = saddr_con;
-    saddr_con->sin_family = AF_INET;
-    saddr_con->sin_port = htons(BASE_PORT_CON);
-    inet_aton("127.0.0.1", &saddr_con->sin_addr);
+    // connect IPv4
+    struct sockaddr_in* saddr4_con = NULL;
+    if (bm_connect_addr_inited) {
+        saddr4_con = &bm_connect_addr;
+    } else {
+        saddr4_con = malloc(sizeof(struct sockaddr_in));
+        assert(saddr4_con != NULL);
+        saddr4_con->sin_family = AF_INET;
+        saddr4_con->sin_port = htons(BASE_PORT_CON);
+        saddr4_con->sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    }
+    ctx->connect_arg_NN_prog = saddr4_con;
 
-    struct sockaddr_in* saddr_bind = (struct sockaddr_in*) malloc(sizeof(struct sockaddr_in));
+    // bind IPv4
+    struct sockaddr_in* saddr_bind = NULL;
+    if (bm_bind_addr_inited) {
+        saddr_bind = &bm_bind_addr;
+    } else {
+        saddr_bind = malloc(sizeof(struct sockaddr_in));
+        assert(saddr_bind != NULL);
+        saddr_bind->sin_family = AF_INET;
+        saddr_bind->sin_port = htons(BASE_PORT_BIND);
+        saddr_bind->sin_addr.s_addr = htonl(INADDR_ANY);
+    }
     ctx->bind_arg_NN_prog = saddr_bind;
-    saddr_bind->sin_family = AF_INET;
-    saddr_bind->sin_port = htons(BASE_PORT_BIND);
-    inet_aton("0.0.0.0", &saddr_bind->sin_addr);
 
     // EVERYTHING MUT BE INITIALIZED BEFORE
     // do one warmup iteration to allocate memory in mmap
