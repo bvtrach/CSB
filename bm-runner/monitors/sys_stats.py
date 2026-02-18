@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from jsonpath_ng import parse
 from monitors.monitor import Monitor
 from bm_utils import ensure_exists
-from utils.logger import bm_log
+from utils.logger import bm_log, LogType
 
 
 # TODO: generate other user plots
@@ -26,9 +26,12 @@ class MpstatCmd:
         cmds.append(f"{self.INTERVAL}")
         self.fname = os.path.join(output_dir, output_file)
         cmd_str = " ".join(cmds)
+        env = {"LANG": "en_US.UTF-8", "LC_ALL": "en_US.UTF-8"}
         bm_log(f"Running {cmd_str}")
         with open(self.fname, "w") as outfile:
-            self.process = subprocess.Popen(cmds, stdout=outfile, stderr=subprocess.PIPE, text=True)
+            self.process = subprocess.Popen(
+                cmds, env=env, stdout=outfile, stderr=subprocess.PIPE, text=True
+            )
 
     def stop(self):
         # This acts like ctrl+C
@@ -133,7 +136,15 @@ class SystemStats(Monitor):
             filtered_stats = list(filter(lambda e: e["cpu"] == core, stats))
             df = pd.DataFrame(filtered_stats)
             # convert to datetime column
-            df["time"] = pd.to_datetime(df["time"], format="%I:%M:%S %p")
+            try:
+                df["time"] = pd.to_datetime(df["time"], format="%I:%M:%S %p")
+            except ValueError:
+                bm_log(
+                    "mpstat does not follow format yyyy:mm:dd am/pm. Make sure that en_US.UTF-8 locale package is installed (on openEuler, install package glibc-all-languages).",
+                    LogType.ERROR,
+                )
+                return
+
             # calc seconds elapsed
             df["time"] = (df["time"] - df["time"].iloc[0]).dt.total_seconds()
             # If some offsets are negative due to wraparound at midnight, add number of seconds in
