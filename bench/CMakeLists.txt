@@ -18,8 +18,7 @@ elseif(CSB_THREAD_SANITIZER)
     target_link_options(CSB INTERFACE -fsanitize=thread)
 endif()
 
-enable_testing()
-file(GLOB TARGETS targets/*.h)
+file(GLOB TARGETS CONFIGURE_DEPENDS targets/*.h)
 
 set(BM_DEFS _GNU_SOURCE)
 
