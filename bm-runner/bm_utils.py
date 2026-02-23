@@ -190,20 +190,31 @@ def ensure_exists(
     name: str, dir: Optional[PathType] = None, env_var_dir: Optional[str] = None
 ) -> str:
     """
-    Checks if the given binary is found under the given `dir`,
-    available system wide, or in the dir specified by `env_var_dir` respectively.
-    If found in any, it returns a name that can be run from anywhere.
-    Otherwise, it exits with an error message.
+    Checks if the given file with the given `name` exists under:
+        - given path (abs/relative the project folder)
+        - system wide
+        - under path defined in given `env_var_dir`
+    The check happens in the aforementioned order, and if found
+    at any stage the function exits and returns:
+        - absolute path+name if given path is absolute and it is found there
+        - relative path+name to the project if given path is relative to project path
+        - name found in system wide (e.g. under usr/bin/)
+        - absolute path specified by env var+name if found there
+        - otherwise, fatal error is logged and execution is aborted
     """
-    bm_log(f"ensure_exists {name}, {dir}, {env_var_dir}")
+    bm_log(f"ensure_exists name: {name}, dir:{dir}, env_var_dir:{env_var_dir}")
     fname = name
-    if dir is not None:
+    if dir is not None and os.path.isabs(fname):
         fname = os.path.join(dir, name)
         if Path(fname).exists():
             return fname
-    elif exists_system_wide(fname):
-        return fname
-    elif env_var_dir is not None:
+    if dir is not None:
+        fname = os.path.join(dir, name)
+        if Path(resolve_path(fname)).exists():
+            return fname
+    if exists_system_wide(name):
+        return name
+    if env_var_dir is not None:
         env_dir = os.getenv(env_var_dir)
         if env_dir is not None:
             fname = os.path.join(env_dir, name)

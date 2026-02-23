@@ -1,12 +1,9 @@
 # Copyright (C) Huawei Technologies Co., Ltd. 2026. All rights reserved.
 # SPDX-License-Identifier: MIT
 
-import os
 import sys
-import shutil
 from typing import Optional
 from config.adapter import Adapter
-from bm_utils import exists_system_wide
 from pathlib import Path
 from bm_utils import ensure_exists
 from utils.logger import bm_log, LogType
@@ -24,6 +21,7 @@ class Application(dict):
         path: Optional[Path] = None,
         args: Optional[str] = None,
         adapter: Optional[Adapter] = None,
+        cd: bool = False,
     ):
         """
         An application is either a builtin benchmark binary from the `bench` directory,
@@ -38,8 +36,12 @@ class Application(dict):
         name: str
             The name of the application/benchmark binary.
         path: Optional[Path]
-            The dir where the application/benchmark binary exists. Required if it does not exist
-            system wide.
+            Specifies the relative path where the benchmark binary/script exists. This is
+            relevant to running external benchmarks that do not exist system wide under e.g. in `/usr/bin`.
+            Note that the path here should be relative to CSB (project) dir, which is mounted as
+            `/home` dir in the containers. When running an external benchmark, place its parent folder under
+            the project directory e.g. `CSB/bm-external/will-it-scale`, then specify `path` as
+            `bm-external/will-it-scale`.
         operations: list[int]
             A list of integers representing the distribution of operations.
             The sum of all values in the list must be equal to 1024.
@@ -56,14 +58,22 @@ class Application(dict):
         adapter: Optional[Adapter] = {}
             An adapter object.
             This is only relevant for external applications/benchmarks.
+        cd: bool = false
+            When set to `true`, it changes the current directory to the given `path`, and
+            then runs the binary/script with the given `name`. When set to `false` and `path`
+            is given, the binary is run from the project directory as `path/name`. Use this
+            configuration with caution! This configuration is useful when running external
+            benchmarks that require to be run from their own directory, because they use
+            relative paths like unix bench.
         -
         """
         super().__init__(
-            name=name, path=path, op_distributions=operations, args=args, adapter=adapter
+            name=name, path=path, op_distributions=operations, args=args, adapter=adapter, cd=cd
         )
         self.name = name
         self.path = path
         self.operations = operations
+        self.cd = cd
         # Set default framework arguments
         self.args = (
             "-t={threads} -n={noise} -d={duration} -s={initial_size}" if args is None else args
@@ -75,17 +85,24 @@ class Application(dict):
                 LogType.FATAL,
             )
             sys.exit(1)
+        if self.cd and self.path is None:
+            self.cd = False
+            bm_log(
+                f"Ignoring `cd` in configuration of {name}. `path` must be set when `cd` is set to `true`",
+                LogType.ERROR,
+            )
 
     def __get_runnable_cmd(self, work_dir: Path) -> str:
-        binary_path = os.path.join(work_dir, self.BUILTIN_APP_DIR)
         if self.path:
             fname = ensure_exists(name=self.name, dir=self.path)
-            shutil.copy(fname, os.path.join(binary_path, self.name))
+            # if changing directory is required, the command
+            # will be just the app name.
+            fname = f"./{self.name} " if self.cd else fname
         else:
-            if exists_system_wide(self.name):
-                return f"{self.name} "
-            fname = ensure_exists(name=self.name, dir=binary_path)
-        return f"./{os.path.join(self.BUILTIN_APP_DIR, self.name)} "
+            # if path is None, then we are either running a builtin benchmark
+            # or one that is available system wide
+            fname = ensure_exists(name=self.name, dir=self.BUILTIN_APP_DIR)
+        return f"{fname} "
 
     def get_cmd(self, threads, duration, noise, initial_size, index, work_dir: Path) -> str:
         cmd = self.__get_runnable_cmd(work_dir)
