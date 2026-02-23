@@ -15,34 +15,34 @@ def csb_dir() -> Path:
 #################################
 def test_resolve_path_native():
     parent = csb_dir()
-    input = "build/bench/x"
-    expected_out = os.path.join(parent, input)
-    out = resolve_path(input)
+    input_ = "build/bench/x"
+    expected_out = os.path.join(parent, input_)
+    out = resolve_path(input_)
     assert expected_out == out
 
 
 def test_resolve_path_container():
-    input = "build/bench/x"
-    expected_out = os.path.join("/home", input)
-    out = resolve_path(input, use_in_container=True)
+    input_ = "build/bench/x"
+    expected_out = os.path.join("/home", input_)
+    out = resolve_path(input_, use_in_container=True)
     assert expected_out == out
 
 
 def test_resolve_path_native_full():
     parent = csb_dir()
     relative = "scripts/plugins/launch-clients-local.sh"
-    input = os.path.join(parent, relative)
-    expected_out = input
-    out = resolve_path(input)
+    input_ = os.path.join(parent, relative)
+    expected_out = input_
+    out = resolve_path(input_)
     assert expected_out == out
 
 
 def test_resolve_path_container_full():
     parent = csb_dir()
     relative = "scripts/plugins/launch-clients-local.sh"
-    input = os.path.join(parent, relative)
+    input_ = os.path.join(parent, relative)
     expected_out = os.path.join("/home", relative)
-    out = resolve_path(input, use_in_container=True)
+    out = resolve_path(input_, use_in_container=True)
     assert expected_out == out
 
 
@@ -75,7 +75,7 @@ def test_ensure_exists_sys_wide_no_dir():
 
 
 def test_ensure_exists_env_var():
-    input_env_var = "CSB_PLUGINS"
+    input_env_var = "CSB_TEST_ENV"
     current_dir = os.getcwd()
     real_dir = f"{current_dir}/../scripts"
     os.environ[input_env_var] = real_dir
