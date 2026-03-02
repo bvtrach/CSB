@@ -40,11 +40,11 @@ setnonblocking(int sock)
 {
     int opt = fcntl(sock, F_GETFL);
     if (opt < 0) {
-        printf("fcntl(F_GETFL) fail.");
+        fprintf(stderr, "fcntl(F_GETFL) fail.");
     }
     opt |= O_NONBLOCK;
     if (fcntl(sock, F_SETFL, opt) < 0) {
-        printf("fcntl(F_SETFL) fail.");
+        fprintf(stderr, "fcntl(F_SETFL) fail.");
     }
 }
 
@@ -164,7 +164,7 @@ usage(const char *argv0)
     fprintf(
         stderr,
         "Operation sequence: <NUM_TIME>[rw]<NUM_BYTES>[-operation_sequence]*, "
-        "e.g. '2r1024-1w32'\n");
+        "e.g. '2r1023-1w32'\n");
 }
 
 int
@@ -173,8 +173,8 @@ main(int argc, char *argv[])
     size_t port   = 10000;
     char *program = NULL;
     bool use_ipv6 = false;
-    int opt;
-    while ((opt = getopt(argc, argv, "6p:P:")) != -1) {
+    int opt       = 0;
+    while ((opt = getopt(argc, argv, "6p:P:O")) != -1) {
         switch (opt) {
             case 'p':
                 port = strtoul(optarg, NULL, 0);
@@ -209,10 +209,12 @@ main(int argc, char *argv[])
     struct epoll_event ev;
     int efd = epoll_create1(0);
     if (efd == -1) {
+        fprintf(stderr, "epoll_create1 failed!\n");
         return 1;
     }
     int lsock = socket(use_ipv6 ? AF_INET6 : AF_INET, SOCK_STREAM, 0);
     if (lsock == -1) {
+        fprintf(stderr, "socket failed!\n");
         return 1;
     }
 

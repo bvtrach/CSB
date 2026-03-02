@@ -187,8 +187,11 @@ main(int argc, char *argv[])
     char *host      = NULL;
     char *program   = NULL;
     bool use_ipv6   = false;
-    int opt;
-    while ((opt = getopt(argc, argv, "6h:p:P:")) != -1) {
+    int opt         = 0;
+    bool retry_on_fail =
+        false; /* retry if the connection fails till it succeeds*/
+    bool only_once = false;
+    while ((opt = getopt(argc, argv, "6h:p:P:RO")) != -1) {
         switch (opt) {
             case 'h':
                 host = optarg;
@@ -204,6 +207,12 @@ main(int argc, char *argv[])
                 use_ipv6 = true;
             case 'P':
                 program = optarg;
+                break;
+            case 'R':
+                retry_on_fail = true;
+                break;
+            case 'O':
+                only_once = true;
                 break;
             default: /* '?' */
                 usage(argv[0]);
@@ -270,6 +279,7 @@ main(int argc, char *argv[])
     struct epoll_st est = {};
     est.fd              = epoll_create1(0);
     if (est.fd == -1) {
+        fprintf(stderr, "epoll_create1 failed!\n");
         return 1;
     }
 
@@ -284,11 +294,18 @@ main(int argc, char *argv[])
 
         int csock = socket(use_ipv6 ? AF_INET6 : AF_INET, SOCK_STREAM, 0);
         if (csock == -1) {
+            fprintf(stderr, "socket failed!\n");
             return 1;
         }
         d->fd = csock;
 
-        if (connect(csock, serv_addr, addr_size) == -1) {
+        int connect_ret = 0;
+        do {
+            connect_ret = connect(csock, serv_addr, addr_size);
+        } while (retry_on_fail && connect_ret != 0);
+
+        if (connect_ret == -1) {
+            fprintf(stderr, "connect failed!\n");
             return 2;
         }
 
@@ -297,21 +314,26 @@ main(int argc, char *argv[])
         ev.events   = d->last_epoll;
         ev.data.ptr = d;
         if (epoll_ctl(est.fd, EPOLL_CTL_ADD, csock, &ev) == -1) {
+            fprintf(stderr, "epoll_ctl failed!\n");
             return -1;
         }
         est.nconn++;
     }
 
+    printf("[Client] %zu connections established.\n", est.nconn);
     while (est.nconn) {
         struct epoll_event evs[MAX_EVS];
         int nfds = epoll_wait(est.fd, &evs[0], MAX_EVS, -1);
         if (nfds == -1) {
-            perror("epoll_wait");
             continue;
         }
         for (int i = 0; i < nfds; i++) {
             readwrite(&evs[i], &est);
         }
+        if (only_once) {
+            break;
+        }
     }
+    printf("[Client] exited!\n");
     return 0;
 }
