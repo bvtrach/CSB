@@ -6,6 +6,7 @@
 
 #include <CSB/bm_target.h>
 #include <CSB/bm_helper.h>
+#include <CSB/bm_network.h>
 #include <endian.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -114,6 +115,14 @@ bm_target_get_op_name(char *out_str, const size_t len, size_t op_id)
     // V_UNUSED(len, op_id);
 }
 
+
+static struct sockaddr_in bm_connect_addr;
+static bool bm_connect_addr_inited;
+
+static struct sockaddr_in bm_bind_addr;
+static bool bm_bind_addr_inited;
+
+
 static inline void
 bm_target_init(size_t init_size, size_t num_threads)
 {
@@ -143,6 +152,11 @@ $_end();
     if (netOpsArgsIdx > 0) {
         fprintf(stderr, "Server command: %s\n", server_command);
     }
+
+    parse_net_addr("BM_SYS_CONNECT_ADDR", "BM_SYS_CONNECT_PORT",
+                   &bm_connect_addr, &bm_connect_addr_inited);
+    parse_net_addr("BM_SYS_BIND_ADDR", "BM_SYS_BIND_PORT", &bm_bind_addr,
+                   &bm_bind_addr_inited);
 }
 
 static inline void
