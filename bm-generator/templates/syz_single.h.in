@@ -149,9 +149,9 @@ static inline void bm_target_init(size_t init_size, size_t num_threads) {
   $_begin(NN = [[1; 2]]);
     fp_server = fopen( "server_NN.sh", "w" ); // Open server shell script for writing
     fprintf(fp_server, "#!/bin/bash\n");
-    fprintf(fp_server, " : ${DIR_SERVER:=.}\n");
+    fprintf(fp_server, " : ${DIR_SERVER:=./network}\n");
     fprintf(fp_server, " : ${PORT_SERVER:=36721}\n");
-    fprintf(fp_server, "${DIR_SERVER}/server -p${PORT_SERVER} -w1024 -r1024 -W1024 %s\n", pattern_args);
+    fprintf(fp_server, "${DIR_SERVER}/server -p${PORT_SERVER} %s\n", pattern_args);
     fclose(fp_server);
     chmod("server_NN.sh", S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IWGRP | S_IXGRP | S_IROTH | S_IWOTH | S_IXOTH);
     fprintf(stderr, "PORT_SERVER=36721 DIR_SERVER=\".\" ./server_NN.sh\n");
@@ -176,9 +176,9 @@ $_end();
   $_begin(NN = [[1; 2]]);
     fp_client = fopen( "client_NN.sh", "w" ); // Open file for writing
     fprintf(fp_client, "#!/bin/bash\n");
-    fprintf(fp_client, " : ${DIR_CLIENT:=.}\n");
+    fprintf(fp_client, " : ${DIR_CLIENT:=./network}\n");
     fprintf(fp_client, " : ${PORT_CLIENT:=46721}\n");
-    fprintf(fp_client, "${DIR_CLIENT}/client -p${PORT_CLIENT} -w1024 -r1024 -W1024 %s\n", pattern_args);
+    fprintf(fp_client, "${DIR_CLIENT}/client -h 127.0.0.1 -p${PORT_CLIENT} %s\n", pattern_args);
     fclose(fp_client);
     chmod("client_NN.sh", S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IWGRP | S_IXGRP | S_IROTH | S_IWOTH | S_IXOTH);
     fprintf(stderr, "PORT_CLIENT=46721 DIR_CLIENT=\".\" ./client_NN.sh\n");
