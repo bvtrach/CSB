@@ -71,19 +71,6 @@ advance_step(struct conn_data *d)
 }
 
 static void
-setnonblocking(int sock)
-{
-    int opt = fcntl(sock, F_GETFL);
-    if (opt < 0) {
-        printf("fcntl(F_GETFL) fail.");
-    }
-    opt |= O_NONBLOCK;
-    if (fcntl(sock, F_SETFL, opt) < 0) {
-        printf("fcntl(F_SETFL) fail.");
-    }
-}
-
-static void
 unregister(struct conn_data *d, struct epoll_st *est)
 {
     epoll_ctl(est->fd, EPOLL_CTL_DEL, d->fd, NULL);
@@ -105,16 +92,24 @@ readwrite(struct epoll_event *ev, struct epoll_st *est)
     assert(eops[d->step].sz < sbuf_size);
     if (ev->events & EPOLLOUT) {
         assert(eops[d->step].is_write);
-        r = send(fd, &sbuf[0], eops[d->step].sz, 0);
     } else if (ev->events & EPOLLIN) {
         assert(!eops[d->step].is_write);
-        r = recv(fd, &sbuf[0], eops[d->step].sz, 0);
     }
-    if (r == -1) {
+
+    while (r != -1) {
+        if (eops[d->step].is_write) {
+            r = send(fd, &sbuf[0], eops[d->step].sz, 0);
+        } else {
+            r = recv(fd, &sbuf[0], eops[d->step].sz, 0);
+        }
+        if (r != -1) {
+            advance_step(d);
+        }
+    }
+    if (r == -1 && errno != EAGAIN) {
         unregister(d, est);
         return;
     }
-    advance_step(d);
     if (0 && d->step == 0) {
         unregister(d, est);
         return;
