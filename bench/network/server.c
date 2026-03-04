@@ -3,28 +3,26 @@
  * SPDX-License-Identifier: MIT
  */
 #include <assert.h>
+#include <errno.h>
 #include <fcntl.h>
-#include <sys/socket.h>
+#include <getopt.h>
 #include <netdb.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/epoll.h>
+#include <sys/mman.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
-#include <sys/mman.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <stdbool.h>
-#include <sys/epoll.h>
-#include <getopt.h>
-#include <errno.h>
 
 #include "helper.h"
+#define MAX_EVS 16
 
-#define MAX_EVS  16
-#define BUF_SIZE 1024
-
-static uint8_t sbuf[BUF_SIZE];
+static uint8_t *sbuf;
+static size_t sbuf_size = 0;
 
 struct conn_data {
     size_t n;
@@ -55,7 +53,7 @@ unregister(struct conn_data *d, int efd)
 }
 
 static struct extracted_op eops[128];
-static long eops_sz = 0;
+static size_t eops_sz = 0;
 
 static void
 config_wait(struct conn_data *d, int efd)
@@ -94,7 +92,7 @@ readwrite(struct epoll_event *ev, int efd)
         unregister(d, efd);
         return;
     }
-    assert(eops[d->step].sz < BUF_SIZE);
+    assert(eops[d->step].sz < sbuf_size);
     if (ev->events & EPOLLOUT) {
         assert(!eops[d->step].is_write);
         r = send(fd, &sbuf[0], eops[d->step].sz, 0);
@@ -180,6 +178,11 @@ main(int argc, char *argv[])
         usage(argv[0]);
         return 'P';
     }
+
+    // allocate buffer large enough
+    sbuf_size = get_max_buffer_size(&eops[0], eops_sz) + 1;
+    sbuf      = calloc(1, sbuf_size);
+    assert(sbuf != NULL);
 
     struct epoll_event ev;
     int efd = epoll_create1(0);
