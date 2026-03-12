@@ -2,7 +2,8 @@
 # Copyright (C) Huawei Technologies Co., Ltd. 2026. All rights reserved.
 # SPDX-License-Identifier: MIT
 set -e
-
+export CSB_RESULTS_GROUP="ls"
+source helper/bm-generator-lib.sh
 STRACE_LOG="ls_strace.log"
 APP="ls -la /dev"
 ../scripts/plugins/collect_strace.sh ${STRACE_LOG} ${APP}
@@ -22,6 +23,7 @@ echo "STEP#5: Generating ..."
 echo "STEP#6: Build and test ..."
 cd ../build
 # We only want to build related targets not everything.
-find ../bench/targets/gen-ws -name "min_ls_*.h" | grep -v syz | sed 's/.*\/\(min_ls_.*\)\.h/gen-ws_\1/' | xargs make
+WS=$(get_workspace_dir)
+find ../bench/targets/$WS -name "min_ls_*.h" | grep -v syz | sed "s/.*\/\(min_ls_.*\)\.h/${WS}_\1/" | xargs make
 # We run only related tests
-ctest -R min_ls_* --output-on-failure
+ctest -R "$WS".*_ls_.* --output-on-failure
