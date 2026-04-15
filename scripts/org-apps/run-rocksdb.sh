@@ -18,10 +18,12 @@ if [ ! -f "${rocksdb_exe}" ]; then
   exit 1
 fi
 
-num=5000000
-thr=5
-num=$((num / thr))
+binary="$1"
+threads="$2"
+duration="$3"
+res_dir="$4"
+index="$5"
+num=1000000
 
-$rocksdb_exe --threads=${thr} --num=${num} --db=/tmp/rocksdb_db --benchmarks=fillseq
-
-$@
+$rocksdb_exe --threads=${threads} --num=${num} --db=${res_dir}/${index}-rocksdb --benchmarks=fillseq >/dev/null 2>/dev/null
+$rocksdb_exe --threads=${threads} --duration=${duration} --use_existing_db=1 --db=${res_dir}/${index}-rocksdb --benchmarks=readrandom,multireadrandom,seekrandom,overwrite,readwhilewriting,seekrandomwhilewriting,compact

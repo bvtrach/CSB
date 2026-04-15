@@ -39,7 +39,7 @@
     {
       "name": "db_bench",
       "path": "bm-external/rocksdb/",
-      "args": "--threads={threads} --duration={duration} --use_existing_db=1 --db=/tmp/rocksdb_db --benchmarks=readrandom,multireadrandom,seekrandom,overwrite,readwhilewriting,seekrandomwhilewriting,compact",
+      "args": "{threads} {duration} {res_dir} {index}",
       "adapter": {
         "name": "rocksdb-adapter.sh"
       }
