@@ -31,6 +31,7 @@ class ExecutionUnit:
         self.name = "C" if type == ExecutionType.CONTAINER else "N"
         self.name += f"{idx:03d}_{app.name}"
         self.output_file = os.path.join(Application.BUILTIN_APP_DIR, self.name)
+        self.err_file = os.path.join(Application.BUILTIN_APP_DIR, f"{self.name}_err")
 
     @abstractmethod
     def get_results_dir(self) -> str:
