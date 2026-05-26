@@ -9,6 +9,7 @@
 #include <CSB/bm_stats.h>
 #include <CSB/bm_helper.h>
 #include <CSB/bm_target.h>
+#include <signal.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <sys/resource.h>
@@ -61,6 +62,11 @@ stop(void)
     return atomic_load_explicit(&g_stop, memory_order_relaxed);
 }
 
+static void
+handle_signal_empty(int v)
+{
+}
+
 void *
 run(void *args)
 {
@@ -79,6 +85,11 @@ run(void *args)
     i = DISTRIBUTION_BOUND * tid / g_params.num_threads;
 
     getcpu(&cpu, NULL);
+
+    struct sigaction sa_data = {};
+    sigemptyset(&sa_data.sa_mask);
+    sa_data.sa_handler = &handle_signal_empty;
+    sigaction(SIGUSR1, &sa_data, NULL);
 
     bm_target_reg(&ctx, tid);
     pthread_barrier_wait(&g_start_barrier);
@@ -184,6 +195,9 @@ bm_phase_run(void)
     sleep(g_params.duration);
     /* signal stop */
     atomic_store_explicit(&g_stop, true, memory_order_relaxed);
+    for (size_t i = 0; i < g_params.num_threads; i++) {
+        pthread_kill(threads[i], SIGUSR1);
+    }
 
     duration_min_stop_clk = read_time_stamp_counter();
     record_time(&duration_min_stop_ms);
