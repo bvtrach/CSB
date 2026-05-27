@@ -315,3 +315,19 @@ def read_data_frame_from_csv(file: str) -> Optional[pd.DataFrame]:
     except Exception as e:
         bm_log(f"{e} on {file}", LogType.ERROR)
         return None
+
+
+def get_cgroups_version() -> str:
+    """
+    Returns the used version of cgroups.
+    """
+    # if the following command returns `cgroup2fs`,
+    # then cgroup v2 is in use. If it returns
+    # `tmpfs` then most likely v1 is in use.
+    cgroup = shell_out(
+        command="cat /proc/mounts",
+        output_is_log=False,
+        print_file_shell_cmd=False,
+    ).strip()
+    version = "v2" if "cgroup2".lower() in cgroup.lower() else "v1"
+    return f"{version}"
