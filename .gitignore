@@ -4,8 +4,11 @@ build/
 venv/
 __pycache__/
 results/
-bm-external/*
 deserialized/
 extracted/
 Testing/
 gen-ws
+bm-external/byte-unixbench
+bm-external/sysbench
+bm-external/cgroups/rootfs/
+bm-external/cgroups/config.json

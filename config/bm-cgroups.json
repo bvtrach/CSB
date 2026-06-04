@@ -1,0 +1,51 @@
+{
+  "plots": [
+    {
+      "x": "container_cnt",
+      "x_lbl": "#Containers",
+      "y": "time",
+      "y_lbl": "Time(s)",
+      "hue_lbl": "Executer",
+      "hue": "execution_unit",
+      "shape": "barplot",
+      "title": "Time needed to launch and destroy N containers"
+    },
+    {
+      "x": "container_cnt",
+      "x_lbl": "#Containers",
+      "y": "time",
+      "y_lbl": "Avg Time(s)",
+      "hue": "execution_type",
+      "hue_lbl": "Execution Env",
+      "title": "Average Time vs. #Containers",
+      "type": "mean"
+    }
+  ],
+  "benchmark_config": {
+    "exec_env": [
+      "native"
+    ],
+    "monitors": {
+      "perf": [
+        "-C",
+        "0"
+      ]
+    }
+  },
+  "containers": {
+    "core_count": 1,
+    "core_assignment_policy": {
+      "cpu_order": "asc",
+      "pack_group": "none",
+      "one_cpu_per_core": true
+    }
+  },
+  "applications": [
+    {
+      "path": "bm-external/cgroups",
+      "name": "bm-cgroups.py",
+      "args": "--index {index}",
+      "cd": true
+    }
+  ]
+}
