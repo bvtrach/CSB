@@ -5,10 +5,11 @@ import subprocess
 from typing import Optional
 from pathlib import Path
 from bm_utils import ensure_exists
+from bm_utils import resolve_path
 
 
 class Adapter(dict):
-    ENV_VAR = "CSB_ADAPTERS"
+    DEFAULT_DIR = "scripts/adapters"  # relative to the project root
 
     def __init__(self, name: str, path: Optional[Path] = None):
         """
@@ -28,7 +29,8 @@ class Adapter(dict):
         -
         """
         super().__init__(name=name, path=path)
-        self.fname = ensure_exists(name, path, self.ENV_VAR)
+        self.default_abs_dir = resolve_path(self.DEFAULT_DIR)
+        self.fname = ensure_exists(name, dir=self.default_abs_dir if path is None else path)
 
     def adapt(self, output: str) -> str:
         # This is a blocking call
