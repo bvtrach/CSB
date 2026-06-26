@@ -121,7 +121,7 @@ For each benchmark/run:
 
 11. Write reports.
     Produce one Markdown report per complete run unless cross-run synthesis was
-    requested. Use `results/<base>_csb-analysis.md` where practical and follow
+    requested. Use `results/<base>_csb-analysis.md` as the filename and follow
     `template-csb-analysis-report.md`. Generate HTML only when requested.
 
 11. Prepare kernel patch artifacts when evidence supports a concrete change.
