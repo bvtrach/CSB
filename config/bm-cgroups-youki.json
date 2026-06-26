@@ -124,8 +124,15 @@
   },
   "applications": [
     {
+      "path": "bm-external/cgroups",
+      "name": "bm-cgroups.py",
+      "args": "--index {index} --units {n_units} --iterations 100 --runtime youki --root ./bm-external/cgroups/"
+    }
+  ],
+  "plugins": [
+    {
       "name": "sudo",
-      "args": "./bm-external/cgroups/bm-cgroups.py --index {index} --units {n_units} --iterations 100 --runtime youki --root ./bm-external/cgroups/"
+      "exec_time": "with"
     }
   ]
 }
