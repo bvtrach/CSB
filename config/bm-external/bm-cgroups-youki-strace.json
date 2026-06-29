@@ -1,0 +1,39 @@
+{
+  "plots": [],
+  "benchmark_config": {
+    "exec_env": [
+      "native"
+    ]
+  },
+  "containers": {
+    "container_list": {
+      "values": [
+        [
+          1
+        ]
+      ]
+    },
+    "core_count": 1
+  },
+  "applications": [
+    {
+      "path": "bm-external/cgroups",
+      "name": "bm-cgroups.py",
+      "args": "--index {index} --units {n_units} --iterations 100 --runtime youki --root ./bm-external/cgroups/"
+    }
+  ],
+  "plugins": [
+    {
+      "name": "sudo",
+      "exec_time": "with"
+    },
+    {
+      "name": "collect_strace.sh",
+      "exec_time": "with",
+      "path": "scripts/plugins",
+      "args": [
+        "{res_dir}/bm-cgroups-youki-strace-cnt{index}.log"
+      ]
+    }
+  ]
+}
