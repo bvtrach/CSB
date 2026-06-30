@@ -124,13 +124,13 @@ For each benchmark/run:
     requested. Use `results/<base>_csb-analysis.md` as the filename and follow
     `template-csb-analysis-report.md`. Generate HTML only when requested.
 
-11. Prepare kernel patch artifacts when evidence supports a concrete change.
+12. Prepare kernel patch artifacts when evidence supports a concrete change.
     Create a per-run `results/<base>_patch-series-<theme>/` directory containing
     the patch, `README.md`, and `SAFETY_IMPLICATIONS_AND_DESCRIPTION.md`. Use
     an RFC patch when the change is hypothesis-driven and not rerun-validated.
     Add or update `results/<base>_kernel_patch_preparation_summary.md` as an index.
 
-12. Validate local links.
+13. Validate local links.
     Resolve Markdown links from the file that contains them. Link existing
     result HTML, generated analysis, source paths, and patch artifacts. Mark
     missing optional artifacts as `missing` rather than linking them.
@@ -147,7 +147,19 @@ For each benchmark/run:
 - In cross-run summaries, rank evidence strength separately from degradation
   severity.
 
+## Reports
+
+Write the reports under the result directory or user-specified location, using the related benchmark basename as a prefix:
+
+- `<base>_csb-analysis.md`: should be generated according to point #11 of the Workflow section.
+- `<base>_kernel_patch_preparation_summary.md`: should be generated according to point #12 of the Workflow section.
+
 ## Patch Artifact Requirements
+
+To create a patch series, consider the evidence in detail:
+- For CPU-bound benchmarks, study the perf annotation of the source code. Try to reduce the overheads of hot instructions and code path in the patch.
+- For benchmarks bound on lock contention, study the relevant critical sections. Try to reduce the duration of critical sections, use lock-free data structure, or RCU protection if possible.
+- For disk and network bound benchmarks, suggest further experiments on faster hardware.
 
 Patch proposals must state:
 

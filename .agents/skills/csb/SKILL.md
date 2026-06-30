@@ -93,6 +93,14 @@ echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
 cat /proc/sys/kernel/perf_event_paranoid
 ```
 
+In CSB, `perf` and `perf_lock` monitors can conflict with each other, causing corruption of the `perf` monitor results. If both monitors are enabled in the configuration, ask the user to leave only one of these monitors enabled.
+
+The results of the `perf` monitor can be hard to interpret without the `mpstat` monitor. If `perf` monitor is enabled, but `mpstat` monitor is not, suggest to also enable `mpstat`, but don't insist on this.
+
+The aim of `mpstat` monitor is to capture the CPU utilization of one benchmark execution unit (process or container). To this end, check that the list of cores passed to mpstat matches the full list of cores of one of the benchmark execution units.
+
+If `mpstat` monitor's `iowait` results suggest active disk IO, but `iostat` monitor is missing, suggest to the user to add it.
+
 For perf tracepoints, bpftrace, scheduler/block events, and other trace-based monitors, also check tracefs. Prefer `/sys/kernel/tracing`; fall back to `/sys/kernel/debug/tracing` only when needed:
 
 ```bash

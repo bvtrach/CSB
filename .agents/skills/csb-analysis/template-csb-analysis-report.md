@@ -39,6 +39,9 @@ These are the functions where more cycles/samples/wait appear as execution units
 ## Kernel Change Artifacts
 - `<function>`: `[kernel changes](<benchmark>-<function>-kernel-changes.md)`
 
+## Kernel Commit Analysis
+List commits in the Linux kernel, between Linux release (e.g. 6.6) used for benchmarking and the latest release, which affect the hot code paths of the benchmark run. The goal here is find commits that, if not already present, would yield better performance if backported.
+
 ## Kernel Patch Artifact
 - patch series:
 - patch file:
