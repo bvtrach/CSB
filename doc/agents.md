@@ -12,6 +12,22 @@ CSB also contains general information for AI agents about the
 development process of CSB, such that they can effectively modify the
 configurations and develop new functionality (e.g. monitors) for CSB.
 
+## Installation
+
+Install `node`, `nvm` and `npm`:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
+. "$HOME/.nvm/nvm.sh"
+node install --lts
+```
+
+After that, install Codex:
+
+```bash
+npm install -g @openai/codex
+```
+
 ## Skills
 
 The following skills are available:
