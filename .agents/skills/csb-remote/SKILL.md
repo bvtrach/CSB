@@ -31,6 +31,7 @@ If access fails, help diagnose the SSH target, username, key, host key, jump hos
 - Treat the remote as source of truth for benchmark output, running-kernel facts, topology, cgroups, runtimes, monitor availability, and permissions.
 - Run runtime checks, package installs, benchmark commands, monitor captures, and cleanup on the remote.
 - Keep kernel source under the controller checkout. Any added kernel git remote, branch, tag, commit, dirty-state note, or comparison ref used by `csb-analysis` or `csb-refine` must match the remote host's running kernel, not the controller's kernel.
+- Run the commands that need to access the kernel symbol information on the remote.
 - Do not infer remote capability from the controller. Verify Docker/runc/youki, perf, tracefs, bpftrace, sysstat, NICs, cgroups, and running-kernel identity on the remote.
 - For multiple remote hosts, prefix tmux sessions, result groups, temp configs, and copied directories with `csb-remote_<remote>_`.
 - Do not kill, rename, or reuse unrelated user tmux sessions.
