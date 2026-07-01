@@ -1,6 +1,18 @@
 ```markdown
 # <benchmark/run> CSB Analysis
 
+## Summary
+Insert a Bottom Line Up From summary here. Try to fit into 3-4 sentences.
+
+Include information on:
+- hypothesis;
+- RFC Linux kernel patches;
+- further investigation directions for user that are directly supported by evidence.
+
+Do not include information on:
+- actions that were carried out and finished successfully;
+- futher investigation directions not supported by directly available evidence.
+
 ## Result Identity
 - run:
 - benchmark:
