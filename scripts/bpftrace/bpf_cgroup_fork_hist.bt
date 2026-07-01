@@ -1,0 +1,15 @@
+kprobe:cgroup_can_fork,
+kprobe:cgroup_fork
+__FILTER__
+{
+    @start[tid] = nsecs;
+}
+kretprobe:cgroup_can_fork,
+kretprobe:cgroup_fork
+/@start[tid]/
+{
+    $duration = (nsecs - @start[tid]) / 1000;
+    @cgroup_fork_latency[pid, comm] = hist($duration);
+    delete(@start[tid]);
+}
+

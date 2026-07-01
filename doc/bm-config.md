@@ -122,6 +122,7 @@ Monitors are used to monitor performance. They can be used to analyze the behavi
 - `"sar_net"`:  monitors network traffic.
 - `"perf_stat"`:  Runs perf stat.
 - `"perf_lock"`:  Runs perf lock, and perf lock contention if supported. Lock-contention output is generated when the kernel exposes the required `perf lock` trace-points.
+- `"bpftrace"`:  Runs [bpftrace](https://bpftrace.org/docs/release_025/stdlib) with the given programs. Users may list programs from scripts/bpftrace. Giving multiple programs as arguments, will result in launching multiple instances of bpftrace.
 ## PlotType
 Supported types of plots.  <br/>Supported values:
 - `"normal"`:  Plots according to the config no post processing of data.
@@ -158,3 +159,4 @@ CSB bm-runner has universal configuration that can overwrite default behavior an
 - `"CSB_PIN_MONITORS"`:  When set to `true`, all monitors will be pinned to a specific CPU.
 - `"CSB_RESULTS_GROUP"`:  when set to <dir-name>, bm-runner dumps all results under results/<dir-name>.
 - `"CSB_ARM_SPE"`:  when set to `true`, it checks of availability of arm_spe perf event and captures these events.
+- `"CSB_BPFTRACE_FILTER"`:  can be used to overwrite the default filter of bpftrace `/ comm == "<comm>" /`. Note that `<comm>` is replaced by the first 15chars of the benchmark application name.

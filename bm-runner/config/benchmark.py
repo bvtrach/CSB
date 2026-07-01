@@ -34,6 +34,7 @@ class MonitorType(str, Enum):
     SAR_NET: monitors network traffic.
     PERF_STAT: Runs perf stat.
     PERF_LOCK: Runs perf lock, and perf lock contention if supported. Lock-contention output is generated when the kernel exposes the required `perf lock` trace-points.
+    BPF_TRACE: Runs [bpftrace](https://bpftrace.org/docs/release_025/stdlib) with the given programs. Users may list programs from scripts/bpftrace. Giving multiple programs as arguments, will result in launching multiple instances of bpftrace.
     """
 
     MPSTAT = "mpstat"
@@ -43,6 +44,7 @@ class MonitorType(str, Enum):
     SAR_NET = "sar_net"
     PERF_STAT = "perf_stat"
     PERF_LOCK = "perf_lock"
+    BPF_TRACE = "bpftrace"
 
 
 class BenchmarkConfig(dict):

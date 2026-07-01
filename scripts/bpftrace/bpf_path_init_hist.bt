@@ -1,0 +1,12 @@
+kprobe:path_init
+__FILTER__
+{
+    @start[tid] = nsecs;
+}
+
+kretprobe:path_init
+/ @start[tid] /
+{
+    @path_init_ns[pid, comm] = hist(nsecs - @start[tid]);
+    delete(@start[tid]);
+}

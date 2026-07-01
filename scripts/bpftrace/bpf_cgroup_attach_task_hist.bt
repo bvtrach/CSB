@@ -1,0 +1,12 @@
+kprobe:cgroup_attach_task
+__FILTER__
+{
+    @start[tid] = nsecs;
+}
+kretprobe:cgroup_attach_task
+/@start[tid]/
+{
+    $duration = (nsecs - @start[tid]) / 1000;
+    @cgroup_attach_task_latency[pid, comm] = hist($duration);
+    delete(@start[tid]);
+}

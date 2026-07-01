@@ -21,6 +21,7 @@ class BackgroundProcess:
         cmds: list[str],
         wdir: Optional[str] = None,
         ofile_name: Optional[str] = None,
+        efile_name: Optional[str] = None,
         pin: Optional[list[int]] = None,
         requires: list[str] = [],
     ):
@@ -39,6 +40,8 @@ class BackgroundProcess:
             The working directory where the process will be executed. If not provided, `out_dir` will be used as the working directory.
         ofile_name: Optional[str]
             The name of the file to save `stdout` to. If not provided, a given `name` with a `.log` extension will be used.
+        efile_name: Optional[str]
+            The name of the file to save `stderr` to. If not provided, a given `name` with a `.err` extension will be used.
         pin: Optional[list[int]]
             Optional list of CPUs to assign to the process with taskset.
             If None, the process will not be assigned specific CPUs.
@@ -47,7 +50,11 @@ class BackgroundProcess:
         """
         assert len(cmds) > 0, "expected at least the process name"
         self.name = name
-        self.efile_name = os.path.join(out_dir, f"{self.name}.err")
+        if efile_name is None:
+            self.efile_name = os.path.join(out_dir, f"{self.name}.err")
+        else:
+            self.efile_name = os.path.join(out_dir, efile_name)
+
         if ofile_name is None:
             self.ofile_name = os.path.join(out_dir, f"{self.name}.log")
         else:
@@ -129,13 +136,13 @@ class BackgroundProcess:
         )
         self.process.wait()
 
-    def stop(self, timeout=TIMEOUT_SEC):
+    def stop(self, timeout=TIMEOUT_SEC) -> int:
         """
         Sends ctrl+c signal to the process if it is still running.
         On timeout the process will be terminated.
         """
         if self.process is None:
-            return
+            return 0
         bm_log(f"[{self.name}] stopping, timeout given {timeout}s")
         self.process.send_signal(signal.SIGINT)
         try:
@@ -148,6 +155,7 @@ class BackgroundProcess:
             self.__terminate()
             self.__close_file(self.ofile)
             self.__close_file(self.efile)
+        return self.process.returncode
 
     def read_output(self):
         """
@@ -166,3 +174,10 @@ class BackgroundProcess:
         Returns the full path of the output file name of the process.
         """
         return self.ofile_name
+
+    @property
+    def err_file_name(self):
+        """
+        Returns the full path of the error file name of the process.
+        """
+        return self.efile_name
