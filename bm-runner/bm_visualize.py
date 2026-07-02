@@ -8,129 +8,20 @@ from dominate import document
 from dominate.tags import style, table, tr, td, div, img, h1, h2, a, iframe
 import pandas as pd
 from pandas import DataFrame
-import seaborn as sns
-import matplotlib.pyplot as plt
 import base64
 import statistics
 import math
 from benchkit.utils.dir import parentdir
 from config.plot import PlotConfig
 from config.plot import PlotType
-import time
 from pathlib import Path
 import re
 from utils.logger import bm_log, LogType
+from visual.plotchart import PlotChart
+
 
 # TODO: refactor histogram building not to use global vars
 # TODO: document functions
-###########################################################################
-
-
-def col_exists(df: DataFrame, col: str, title: str) -> bool:
-    if col not in df.columns:
-        bm_log(
-            f"cannot find column {col} in the produced data. This plot `{title}` will not be generated!",
-            LogType.ERROR,
-        )
-        return False
-    return True
-
-
-class PlotChart:
-    def __init__(self, plot: PlotConfig):
-        self.fig = plt.figure(dpi=150)
-
-        self.chart = self.fig.add_subplot()
-        self.chart.set_title(plot.title)
-
-    def add(
-        self,
-        plot: PlotConfig,
-        df: DataFrame,
-        add_points: bool = False,
-        **kwargs,
-    ):
-        args = dict(kwargs)
-        # prep hue, we want to generate enough colors
-        cnt = df[plot.hue].nunique()
-        sorted_gp = sorted(df[plot.hue].unique())
-        palette = sns.color_palette(palette="hls", n_colors=cnt)
-        sns_plot_fun = getattr(sns, plot.shape)
-
-        if (
-            not col_exists(df, plot.y, plot.title)
-            or not col_exists(df, plot.x, plot.title)
-            or not col_exists(df, plot.hue, plot.title)
-        ):
-            return
-
-        chart = sns_plot_fun(
-            ax=self.chart,
-            data=df,
-            palette=palette,
-            x=plot.x,
-            hue=plot.hue,
-            hue_order=sorted_gp,
-            y=plot.y,
-            **args,
-        )
-        if add_points:
-            sns.scatterplot(
-                x=plot.x,
-                y=plot.y,
-                hue=plot.hue,
-                markers=plot.hue,
-                data=df,
-                hue_order=sorted_gp,
-                palette=palette,
-                ax=chart,
-                legend=False,
-            )
-
-        # calculate maximum length of x values
-        max_len = max(len(str(x)) for x in df[plot.x])
-        # rotate the xticks to avoid overlap of string
-        if max_len > 10:
-            plt.xticks(rotation=90)
-
-        chart.set(xlabel=plot.x_lbl, ylabel=plot.y_lbl)
-        chart.grid(True)
-        new_ylim = 1.2 * max(df[plot.y])
-        chart.set_ylim(0, 1 if new_ylim == 0 else new_ylim)
-
-        plt.legend(
-            loc="upper left",
-            title=f"{plot.hue_lbl}",
-            bbox_to_anchor=(1, 1),
-            borderaxespad=0.3,
-            fontsize=4.5,
-        )
-
-    def save(self, out_fig_name, gen_pdf: bool = False):
-
-        self.fig.set_size_inches(w=10, h=8)
-        self.fig.tight_layout()
-
-        figure_name = f"{out_fig_name}_{time.perf_counter()}"
-        self.fig.savefig(f"{figure_name}.png", transparent=False)
-        if gen_pdf:
-            self.fig.savefig(f"{figure_name}.pdf", transparent=False)
-        plt.close()
-
-
-def plot_chart(
-    plot: PlotConfig,
-    df: DataFrame,
-    out_fig_name,
-    add_points: bool = False,
-    gen_pdf: bool = False,
-    **kwargs,
-):
-    pc = PlotChart(plot)
-    pc.add(plot, df, add_points=add_points, **kwargs)
-    pc.save(out_fig_name, gen_pdf)
-
-
 ###########################################################################
 def _add_css_style(doc: document):
     doc.add(
@@ -226,7 +117,7 @@ def create_success_rate_plot(org_df, config: PlotConfig, dir):
     )
     # overwrite
     config.y = succ_percent
-    plot_chart(plot=config, df=df, out_fig_name=f"{dir}/{prefix}_succ_percent")
+    PlotChart.plot(plot=config, df=df, out_fig_name=f"{dir}/{prefix}_succ_percent")
 
 
 ###########################################################################
@@ -386,7 +277,7 @@ def create_histogram_plot(df, plot: PlotConfig, dir):
     implicit_add_columns(trans_df, subdf, histo, plot.x, plot.hue)
     ############################################################
     plot.y = "latency"  # TODO configure
-    plot_chart(plot=plot, df=trans_df, out_fig_name=f"{dir}/{histo}_boxplot")
+    PlotChart.plot(plot=plot, df=trans_df, out_fig_name=f"{dir}/{histo}_boxplot")
 
 
 ###########################################################################
@@ -395,7 +286,7 @@ def create_plots(df, plots: list[PlotConfig], dir, info: str):
         match plot.type:
             case PlotType.NORMAL:
                 fig_name = f"{dir}/{plot.x}_vs_{plot.y}_{info}"
-                plot_chart(plot=plot, df=df, out_fig_name=fig_name)
+                PlotChart.plot(plot=plot, df=df, out_fig_name=fig_name)
             case PlotType.MIN_MAX_AVG:
                 create_min_max_avg_plot(org_df=df, config=plot, dir=dir)
             case PlotType.SUCCESS_PERCENT:
@@ -451,7 +342,7 @@ def split_data_frame(df: DataFrame) -> dict:
 
 
 def create_mean_plot(df: DataFrame, plot: PlotConfig, dir):
-    plot_chart(
+    PlotChart.plot(
         plot=plot,
         df=df,
         out_fig_name=f"{dir}/{plot.y}_mean",
@@ -500,7 +391,7 @@ def create_linearity_plot(df: DataFrame, plot: PlotConfig, dir):
 
     plot.y = "linearity"
     plot.y_lbl = "Linearity"
-    plot_chart(plot=plot, df=lin_df, out_fig_name=f"{dir}/linearity")
+    PlotChart.plot(plot=plot, df=lin_df, out_fig_name=f"{dir}/linearity")
 
 
 ###########################################################################
