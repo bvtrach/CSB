@@ -12,6 +12,10 @@ import bm_config
 import sys
 from pathlib import Path
 from config.env_config import UniversalConfig, EnvUniversalConfig
+import math
+import seaborn as sns
+import matplotlib.pyplot as plt
+import time
 
 
 class BpfTrace(Monitor):
@@ -272,17 +276,17 @@ class BpfTrace(Monitor):
                     LogType.WARNING,
                 )
             # In order to create data that summarizes the full run
-            # we remove PID col, and sum up data of all processes
-            sum_df = (
+            # we remove PID, COMM cols and sum up data of all processes.
+            summary_df = (
                 df.drop(columns=[self.PID, self.COMM]).groupby([self.NAME], as_index=False).sum()
             )
             # since we expect the data to be related to one trace point, we expect to have
             # only one row.
-            if len(sum_df) > 1:
+            if len(summary_df) > 1:
                 bm_log(f"{fname}: multi trace points is not supported", LogType.ERROR)
             else:
                 # we compress the data of all buckets into on string
-                for _, row in sum_df.iterrows():
+                for _, row in summary_df.iterrows():
                     hist_data = ",".join(
                         f"{col}{self.BUCKET_EQUAL_CHAR}{int(val)}"
                         for col, val in row[bucket_cols].items()
@@ -290,3 +294,128 @@ class BpfTrace(Monitor):
         # always output to maintain same number of cols in CSV
         output = f"{prefix}='{hist_data}';"
         return output
+
+    @staticmethod
+    def __parse_size_to_bytes(bucket_desc: str) -> int | float:
+        bucket_desc = str(bucket_desc).strip().upper()
+        match = re.fullmatch(r"(\d+)([KMGTP]?)", bucket_desc)
+        if not match:
+            return math.inf
+
+        value = int(match.group(1))
+        unit = match.group(2)
+
+        scale = {
+            "": 1,
+            "K": 1024,
+            "M": 1024**2,
+            "G": 1024**3,
+            "T": 1024**4,
+            "P": 1024**5,
+        }
+
+        return value * scale[unit]
+
+    @staticmethod
+    def __sort_bucket_key(bucket: str) -> int | float:
+        lower = str(bucket).split("-", 1)[0]
+        return BpfTrace.__parse_size_to_bytes(lower)
+
+    @staticmethod
+    def __parse_hist_col_into_buckets(
+        df: pd.DataFrame, hist_col_name: str
+    ) -> tuple[pd.DataFrame, list]:
+        # fill empty values with an empty string, convert to string
+        # strip away leading or trailing single quotes.
+        stripped = df[hist_col_name].fillna("").astype(str).str.strip("'")
+
+        # Parse hist data column value into separate buckets.
+        parsed = stripped.apply(
+            lambda hist_data: {
+                # key is the bucket description e.g. 512-1024
+                # value is the count associated with the bucket
+                k: int(v)
+                for bucket in hist_data.split(",")
+                if bucket
+                for k, v in [bucket.split(BpfTrace.BUCKET_EQUAL_CHAR)]
+            }
+        )
+
+        bucket_cols: list[str] = sorted(
+            dict.fromkeys(k for d in parsed for k in d),
+            key=BpfTrace.__sort_bucket_key,
+        )
+
+        hist_df = pd.DataFrame(parsed.tolist(), columns=pd.Index(bucket_cols)).fillna(0).astype(int)
+
+        df = df.drop(columns=hist_col_name).join(hist_df)
+
+        id_vars = [c for c in df.columns if c not in bucket_cols]
+        df_long = df.melt(
+            id_vars=id_vars,
+            value_vars=bucket_cols,
+            var_name="bucket",
+            value_name="count",
+        )
+
+        return df_long, bucket_cols
+
+    @staticmethod
+    def dump_hist_data_heat_map(df: pd.DataFrame, plot: PlotConfig, output_dir: str):
+        x_col = plot.x  # container_cnt
+        hue_col = plot.hue  # execution_type
+        hist_col = plot.y  # bpftrace histogram column
+
+        df = df[[x_col, hue_col, hist_col]].copy()
+
+        df_long, bucket_cols = BpfTrace.__parse_hist_col_into_buckets(df, hist_col)
+
+        if df_long.empty:
+            bm_log(f"Cannot plot {plot.title}. Dataframe is empty!", LogType.WARNING)
+            return
+
+        hues = df[hue_col].unique()
+
+        fig, axes = plt.subplots(
+            1,
+            len(hues),
+            figsize=(8 * len(hues), 5),
+            sharey=True,
+        )
+
+        if len(hues) == 1:
+            axes = [axes]
+
+        for subplot, hue_val in zip(axes, hues):
+            df_hue = df_long[df_long[hue_col].astype(str) == str(hue_val)]
+
+            heatmap_data = (
+                df_hue.pivot_table(
+                    index="bucket",
+                    columns=x_col,
+                    values="count",
+                    aggfunc="mean",
+                )
+                .reindex(index=bucket_cols)
+                .fillna(0)
+            )
+
+            sns.heatmap(
+                heatmap_data,
+                annot=True,
+                fmt=".0f",
+                ax=subplot,
+                cmap="magma",
+            )
+
+            subplot.set(
+                title=f"{plot.title} ({hue_val})",
+                xlabel=plot.x_lbl,
+                ylabel="Buckets",
+            )
+
+        fig.tight_layout()
+        fig.savefig(
+            f"{output_dir}/{plot.title}_{time.perf_counter()}.png", dpi=300, bbox_inches="tight"
+        )
+        plt.close(fig)

@@ -18,6 +18,7 @@ from pathlib import Path
 import re
 from utils.logger import bm_log, LogType
 from visual.plotchart import PlotChart
+from monitors.bpftrace import BpfTrace
 
 
 # TODO: refactor histogram building not to use global vars
@@ -297,6 +298,8 @@ def create_plots(df, plots: list[PlotConfig], dir, info: str):
                 create_linearity_plot(df=df, plot=plot, dir=dir)
             case PlotType.MEAN:
                 create_mean_plot(df=df, plot=plot, dir=dir)
+            case PlotType.BPFTRACE_HIST:
+                BpfTrace.dump_hist_data_heat_map(df=df, plot=plot, output_dir=dir)
             case _:
                 bm_log(f"unsupported plot type: {plot.type} skipped!", LogType.WARNING)
 

@@ -17,6 +17,7 @@ class PlotType(str, Enum):
     HISTOGRAM: Experimental, Plots the distribution of operations.
     SUCCESS_PERCENT: Experimental, Plots the percentage of successful operations.
     LINEARITY: Calculates and plots the linearity of the benchmark results.
+    BPFTRACE_HIST: Exclusive graph for `bpftrace` monitor. To be used with programs that generate histogram data. Use the program name without `.bt` suffix in the plot `y` field. The plot will represent the summary of the collected data over all runs.
     """
 
     NORMAL = "normal"
@@ -25,6 +26,7 @@ class PlotType(str, Enum):
     HISTOGRAM = "histogram"
     SUCCESS_PERCENT = "success_percent"
     LINEARITY = "linearity"
+    BPFTRACE_HIST = "bpftrace_hist"
 
 
 class PlotConfig(dict):
@@ -35,6 +37,7 @@ class PlotConfig(dict):
         PlotType.MEAN: "lineplot",
         PlotType.MIN_MAX_AVG: "barplot",
         PlotType.HISTOGRAM: "boxenplot",
+        PlotType.BPFTRACE_HIST: "barplot",
         PlotType.SUCCESS_PERCENT: "barplot",
         PlotType.LINEARITY: "lineplot",
     }
