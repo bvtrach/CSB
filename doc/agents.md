@@ -50,3 +50,11 @@ The following skills are available:
   - Example "Use $csb-remote to run experiment
     config/rocksdb/bm_min_rocks_write_fcntl_5_0.json on host
     remote-server, and analyze the results."
+
+## Demo
+
+As a demo, you can run the following command:
+
+```
+Run $csb benchmark of ../config/rocksdb/bm_min_rocks_write_fcntl_5_0.json, then $csb-analyze the results.
+```
