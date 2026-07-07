@@ -14,10 +14,19 @@ class ExecutionType(str, Enum):
     ----------
     NATIVE: Launches the benchmark(s) directly on the host OS.
     CONTAINER: Launches the benchmark(s) inside a container.
+    BWRAP: Launches the benchmark(s) with bubblewrap.
     """
 
     NATIVE = "native"  # indicates that the benchmark should run natively
     CONTAINER = "container"  # indicates that the benchmark should run inside the container
+    BWRAP = "bwrap"  # indicates that the benchmark should run with bubblewrap
+
+
+EXECUTION_TYPE_PREFIX = {
+    ExecutionType.CONTAINER: "C",
+    ExecutionType.NATIVE: "N",
+    ExecutionType.BWRAP: "B",
+}
 
 
 class MonitorType(str, Enum):

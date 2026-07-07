@@ -9,6 +9,7 @@ from typing import Optional
 from bm_utils import ensure_exists
 from bm_utils import stop_process
 import time
+import resource
 
 
 class BackgroundProcess:
@@ -23,7 +24,7 @@ class BackgroundProcess:
         wdir: Optional[str] = None,
         ofile_name: Optional[str] = None,
         efile_name: Optional[str] = None,
-        pin: Optional[list[int]] = None,
+        pin: Optional[list[int] | str] = None,
         requires: list[str] = [],
     ):
         """
@@ -43,9 +44,10 @@ class BackgroundProcess:
             The name of the file to save `stdout` to. If not provided, a given `name` with a `.log` extension will be used.
         efile_name: Optional[str]
             The name of the file to save `stderr` to. If not provided, a given `name` with a `.err` extension will be used.
-        pin: Optional[list[int]]
+        pin: Optional[list[int]|str]
             Optional list of CPUs to assign to the process with taskset.
             If None, the process will not be assigned specific CPUs.
+            If str, it should be comma delimited list of ints e.g. "1,2,4".
         requires: list[str]
             A list of required applications that must be available for the launch to succeed. Each application is checked for existence.
         """
@@ -67,13 +69,25 @@ class BackgroundProcess:
         if pin is None:
             self.cmds = cmds
         else:
-            cpus = ",".join([str(c) for c in pin])
-            cmd_prefix = ["taskset", "--cpu-list", cpus]
+            cpus_str: str = ""
+            if isinstance(pin, list):
+                cpus_str = ",".join([str(c) for c in pin])
+            else:
+                assert isinstance(pin, str), "Type is not supported!"
+                cpus_str = pin
+
+            cmd_prefix = ["taskset", "--cpu-list", cpus_str]
             self.cmds = cmd_prefix + cmds
 
         # ensure process exist
         for tool in requires:
             ensure_exists(tool)
+
+    @staticmethod
+    def __preexec_fn():
+        os.setpgrp()
+        fd_soft, fd_hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+        resource.setrlimit(resource.RLIMIT_NOFILE, (fd_hard, fd_hard))
 
     def start(self):
         """
@@ -87,7 +101,7 @@ class BackgroundProcess:
             stdout=self.ofile,
             stderr=self.efile,
             env=self.Env,
-            preexec_fn=os.setpgrp,
+            preexec_fn=self.__preexec_fn,
             cwd=self.wdir,
         )
         cmd_str = " ".join(self.cmds)
@@ -110,7 +124,7 @@ class BackgroundProcess:
         """
         Kills the process and whatever children the process spawned.
         """
-        if self.process:
+        if self.process and self.process.poll() is None:
             bm_log(f"Killing {self.name}, with PID = {self.process.pid}")
             stop_process(self.process.pid)
 
@@ -125,17 +139,17 @@ class BackgroundProcess:
         bm_log(f"{self.name} is not alive!", LogType.ERROR)
         return False
 
-    def wait_indefinitely(self):
+    def wait_indefinitely(self) -> int:
         """
         Waits for the process to finish without timeout.
         This method can block for a long time and will not attempt to cancel or terminate the process.
         """
         if self.process is None:
-            return
+            return 0
         bm_log(
             f"Waiting for {self.name} without timeout, with PID = {self.process.pid} to terminate"
         )
-        self.process.wait()
+        return self.process.wait()
 
     def stop(self, timeout=TIMEOUT_SEC) -> int:
         """
