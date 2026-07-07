@@ -106,7 +106,7 @@ For each benchmark/run:
    Use already available local trees, usually `deps/linux`. Search exact symbols
    first, then wrappers/callers from stacks. Record the tree path, current
    commit, dirty status, and whether the source appears to match the tested
-   kernel. Cite fymbol-to-file mapping lookup evidence in the report.
+   kernel. Cite symbol-to-file mapping lookup evidence in the report.
 
 9. Inspect local history.
    Compare candidate hot paths against already available vendor or upstream refs
@@ -146,6 +146,14 @@ For each benchmark/run:
   evidence.
 - In cross-run summaries, rank evidence strength separately from degradation
   severity.
+- Treat evidence for one benchmark instance as sufficient for analysis and further
+  actions. Don't insist on collecting evidence for all benchmark instances.
+  Reason: all benchmark instances are running the same workload.
+- If the CPU idle time is high, and system time is low, diminish the importance
+  of CPU samples (e.g. from perf and perf-stat monitor) as an evidence (consider
+  it only qualitatively), and increase weight of perf-lock evidence. If
+  perf-lock monitor is missing when the idle time is high, report this to the
+  user, and add it when performing further measurements based on these results.
 
 ## Reports
 
