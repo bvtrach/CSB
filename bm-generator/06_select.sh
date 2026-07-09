@@ -21,6 +21,8 @@ export CSB_RESULTS_GROUP="$group"
 
 export CSB_SELECTED_OUTPUT="$(mktemp)"
 
+export FLAMEGRAPH="deps/FlameGraph"
+
 ./scripts/fg-diff/select-benchmarks.sh ./config/"$group"/fg_*.json
 
 echo "The selected benchmarks are (available in $CSB_SELECTED_OUTPUT):"
