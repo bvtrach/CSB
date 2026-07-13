@@ -96,11 +96,13 @@ class BackgroundProcess:
         assert self.process is None, "it seems, it has already been started!"
         self.ofile = open(self.ofile_name, "w")
         self.efile = open(self.efile_name, "w")
+        env = os.environ.copy()
+        env.update(self.Env)
         self.process = subprocess.Popen(
             self.cmds,
             stdout=self.ofile,
             stderr=self.efile,
-            env=self.Env,
+            env=env,
             preexec_fn=self.__preexec_fn,
             cwd=self.wdir,
         )
@@ -124,9 +126,12 @@ class BackgroundProcess:
         """
         Kills the process and whatever children the process spawned.
         """
-        if self.process and self.process.poll() is None:
-            bm_log(f"Killing {self.name}, with PID = {self.process.pid}")
-            stop_process(self.process.pid)
+        if self.process:
+            if self.process.poll() is None:
+                bm_log(f"Killing {self.name}, with PID = {self.process.pid}")
+                stop_process(self.process.pid)
+            self.__close_file(self.ofile)
+            self.__close_file(self.efile)
 
     def is_alive(self) -> bool:
         """
