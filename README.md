@@ -8,6 +8,34 @@ It consists of the following components:
 - [bm-generator][] extends [syzkaller] and uses [tmplr][] to generate system calls based benchmarks
 - [bench][] a set of manual and auto-generated C benchmarks
 
+
+```mermaid
+flowchart LR
+
+    trace["strace.log<br/>MySQL"]
+    generator["bm-generator<br/>(syzkaller)"]
+
+    manual["Manually<br/>developed"]
+    generated["Generated<br/>benchmarks"]
+    external["External<br/>(fio/etc.)"]
+
+    bm@{ shape: cyl, label: "Benchmark set" }
+
+    runner["bm-runner<br/>(Python)"]
+    report["results.html"]
+
+    trace --> generator
+    generator --> generated
+
+    manual --> bm
+    generated --> |filter| bm
+    external --> bm
+
+
+    bm --> runner
+    runner --> report
+```
+
 ## Getting started
 
 A good place to start is to try to run a dummy benchmark. Read [bm-runner][]
