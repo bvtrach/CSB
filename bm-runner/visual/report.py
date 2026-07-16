@@ -7,6 +7,7 @@ import datetime
 import base64
 import re
 from benchkit.benchmark import PathType
+from bm_utils import get_path_rel_to_csb
 
 
 class Report:
@@ -33,10 +34,15 @@ class Report:
             text-align: center;
             font-color: blue;
         }
-        .png_title {
-            font-size: 14px;
-            font-style: italic;
+        a, img {
+            width: 100%;
         }
+        a {
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
     """
 
     def __init__(self, title: str, add_title_date: bool = True, css_style=CSS_STYLE):
@@ -70,13 +76,23 @@ class Report:
         self.doc.add(tbl)
 
     def embed_plots(self, plot_lists: list[list[str]], show_path: bool = True):
+        """
+        Parameters
+        ---
+        plot_lists : list[list[str]]
+            a list of lists. Each list is added to the table as a row, and each element is a cell.
+        """
+        if len(plot_lists) == 0:
+            return
         tbl = table()
+        num_cols = max(map(len, plot_lists))
+        width = 100 / num_cols
         for list in plot_lists:
             row = tr()
             tbl.add(row)
             for plot_path in list:
                 if not plot_path:
-                    row.add(td(""))
+                    row.add(td("", width=f"{width}%"))
                     continue
 
                 img_div = (
@@ -87,8 +103,9 @@ class Report:
                 cell = div()
                 cell.add(a(img_div, href=plot_path))
                 if show_path:
-                    cell.add(a(plot_path, href=plot_path, _class="png_title"))
-                row.add(td(cell))
+                    relative_path = get_path_rel_to_csb(plot_path)
+                    cell.add(a(relative_path, href=str(plot_path)))
+                row.add(td(cell, width=f"{width}%"))
         # append the plots/graphs table to the given document
         self.doc.add(tbl)
 
@@ -100,10 +117,10 @@ class Report:
             f.write(self.doc.render())
 
     @staticmethod
-    def embed_img(path: PathType) -> div:
+    def embed_img(path: PathType) -> img:
         data_uri = base64.b64encode(open(path, "rb").read()).decode("utf-8")
         img_tag = f"data:image/png;base64,{data_uri}"
-        return div(img(src=img_tag))
+        return img(src=img_tag)
 
     @staticmethod
     def embed_svg(path: PathType) -> div:

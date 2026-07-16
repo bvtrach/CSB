@@ -187,16 +187,51 @@ def create_plots(df, plots: list[PlotConfig], dir, info: str):
             )
 
 
-###########################################################################
-def dump_graphs_to_doc(dir, report: Report, split=1):
-    # find all generated plots and embed them into the HTML document
+def plot_sort_key(path):
+    """
+    Sorts according to filename, and creation date.
+    """
+    p = Path(path)
+    return (p.stem, p.stat().st_mtime)
+
+
+def split_in_lists(plots: list[str], split: int) -> list[list]:
+    """
+    Splits the given list into list of lists
+    the split happens when either a new file name is encountered,
+    or if the current length is greater than split.
+    """
+    lists = []
+    current = []
+    current_stem = None
+
+    for plot in plots:
+        stem = Path(plot).stem
+
+        if current and (stem != current_stem or len(current) >= split):
+            lists.append(current)
+            current = []
+
+        current.append(plot)
+        current_stem = stem
+
+    if current:
+        lists.append(current)
+
+    return lists
+
+
+def dump_plots_with_ext(dir: str, report: Report, ext: str = "png", max_plots_per_row=1):
     dir = os.path.realpath(dir)
-    png = glob.glob(os.path.join(dir, "**", "*.png"), recursive=True)
-    svg = glob.glob(os.path.join(dir, "**", "*.svg"), recursive=True)
-    plots = png + svg
-    plots.sort()
-    plots = [plots[i : i + split] for i in range(0, len(plots), split)]
-    report.embed_plots(plots)
+    plots = glob.glob(os.path.join(dir, "**", f"*.{ext}"), recursive=True)
+    plots.sort(key=plot_sort_key)
+    plots_table = split_in_lists(plots, max_plots_per_row)
+    report.embed_plots(plots_table)
+
+
+def dump_graphs_to_doc(dir, report: Report):
+    dump_plots_with_ext(dir, report, ext="png", max_plots_per_row=2)
+    dump_plots_with_ext(dir, report, ext="svg", max_plots_per_row=1)
 
 
 ###########################################################################
