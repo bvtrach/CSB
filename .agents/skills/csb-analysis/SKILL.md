@@ -106,7 +106,7 @@ For each benchmark/run:
    Use already available local trees, usually `deps/linux`. Search exact symbols
    first, then wrappers/callers from stacks. Record the tree path, current
    commit, dirty status, and whether the source appears to match the tested
-   kernel. Cite fymbol-to-file mapping lookup evidence in the report.
+   kernel. Cite symbol-to-file mapping lookup evidence in the report.
 
 9. Inspect local history.
    Compare candidate hot paths against already available vendor or upstream refs
@@ -146,6 +146,15 @@ For each benchmark/run:
   evidence.
 - In cross-run summaries, rank evidence strength separately from degradation
   severity.
+- Threat evidence for one benchmark instance as sufficient for analysis and
+  further actions. Don't insiston collecting evidence for lal benchmark
+  instances.  Reason: all benchmark instances are running the same workload.
+- If the CPU idle time is high, and system+user time is low, diminish the
+  importance of CPU samples (e.g. from perf and perf-stat monitors) as
+  evidence. Instead, consider it only qualitatively, and increase the importance
+  of perf-lock evidence. If perf-lock monitor is missing when the idle time is
+  high, report this to the user, and add it when performing further measurements
+  based on these results.
 
 ## Reports
 
@@ -157,6 +166,8 @@ Write the reports under the result directory or user-specified location, using t
 ## Patch Artifact Requirements
 
 To create a patch series, consider the evidence in detail:
+- If mpstat monitor has high "sys" CPU percentage, it is a CPU-bound benchmark.
+- If mpstat has high "idle" CPU percentage, the benchmark is bound on lock contention or scheduling.
 - For CPU-bound benchmarks, study the perf annotation of the source code. Try to reduce the overheads of hot instructions and code path in the patch.
 - For benchmarks bound on lock contention, study the relevant critical sections. Try to reduce the duration of critical sections, use lock-free data structure, or RCU protection if possible.
 - For disk and network bound benchmarks, suggest further experiments on faster hardware.

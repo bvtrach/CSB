@@ -11,7 +11,7 @@ Include information on:
 
 Do not include information on:
 - actions that were carried out and finished successfully;
-- futher investigation directions not supported by directly available evidence.
+- further investigation directions not supported by directly available evidence.
 
 ## Result Identity
 - run:
@@ -21,18 +21,18 @@ Do not include information on:
 - result artifacts:
 
 ## Performance Degradation
-In benchmark `<name>` we observe that performance starts degradating when `<execution-unit>` is >= `<Y>`.
+In benchmark `<name>` we observe that performance starts degrading when `<execution-unit>` is >= `<Y>`.
 
 | execution units | <prime-metric> | vs baseline | vs peak | success | latency | notes |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
 
 ## Monitor Correlation
-Monitor values that inversely increase as performance degradates:
+Monitor values that inversely increase as performance degrades:
 
 | monitor | baseline | peak | degradation point | largest count | relation | interpretation |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
 
-Monitor values that directly decrease as performance degradates:
+Monitor values that directly decrease as performance degrades:
 
 | monitor | baseline | peak | degradation point | largest count | relation | interpretation |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
@@ -52,7 +52,7 @@ These are the functions where more cycles/samples/wait appear as execution units
 - `<function>`: `[kernel changes](<benchmark>-<function>-kernel-changes.md)`
 
 ## Kernel Commit Analysis
-List commits in the Linux kernel, between Linux release (e.g. 6.6) used for benchmarking and the latest release, which affect the hot code paths of the benchmark run. The goal here is find commits that, if not already present, would yield better performance if backported.
+List commits in the Linux kernel, between Linux release (e.g. 6.6) used for benchmarking and the latest release, which affect the hot code paths of the benchmark run. The goal here is find commits that, if not already present, would yield better performance if backported. When scanning commits, don't look at merges, only consider individual change commits.
 
 ## Kernel Patch Artifact
 - patch series:
