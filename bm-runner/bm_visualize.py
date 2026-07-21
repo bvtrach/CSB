@@ -15,6 +15,7 @@ from visual.plotchart import PlotChart
 from monitors.bpftrace import BpfTrace
 from visual.report import Report
 from bm_utils import read_data_frame_from_csv
+from typing import Optional
 import copy
 
 
@@ -36,7 +37,7 @@ def add_info_tbl(df, report: Report, result_file: str):
 
 
 ###########################################################################
-def create_success_rate_plot(org_df, config: PlotConfig, dir) -> str:
+def create_success_rate_plot(org_df, config: PlotConfig, dir) -> Optional[str]:
     prefix = config.y
     count_col = f"{prefix}_count"
     succ_col = f"{prefix}_succ_count"
@@ -56,7 +57,7 @@ def create_success_rate_plot(org_df, config: PlotConfig, dir) -> str:
 
 
 ###########################################################################
-def create_min_max_avg_plot(org_df, config: PlotConfig, dir: str) -> str:
+def create_min_max_avg_plot(org_df, config: PlotConfig, dir: str) -> Optional[str]:
     """
     Treats `config.y` as a prefix and look for min, max, and avg values
     It assumes such columns exist in the dataframe <config.y>min,
@@ -156,7 +157,7 @@ def create_min_max_avg_plot(org_df, config: PlotConfig, dir: str) -> str:
 
 
 ###########################################################################
-def create_plot(df, plot: PlotConfig, dir, info: str) -> str:
+def create_plot(df, plot: PlotConfig, dir, info: str) -> Optional[str]:
     plot = copy.deepcopy(plot)
     plot.fname += f"_{info}"
     match plot.type:
@@ -247,7 +248,7 @@ def split_data_frame(df: DataFrame) -> dict:
     return frames
 
 
-def create_mean_plot(df: DataFrame, plot: PlotConfig, dir):
+def create_mean_plot(df: DataFrame, plot: PlotConfig, dir) -> Optional[str]:
     return PlotChart.plot(
         plot=plot,
         df=df,
@@ -257,7 +258,7 @@ def create_mean_plot(df: DataFrame, plot: PlotConfig, dir):
     )
 
 
-def create_linearity_plot(df: DataFrame, plot: PlotConfig, dir):
+def create_linearity_plot(df: DataFrame, plot: PlotConfig, dir) -> Optional[str]:
     count_col: str = plot.x  # e.g. container count
     subject_col: str = plot.y  # e.g. throughput
     group_col: str = plot.hue  # e.g. execution env native/container
