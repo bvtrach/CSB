@@ -411,3 +411,29 @@ def is_perf_event_supported(event_name: str) -> bool:
     except Exception:
         # if perf is not installed an exception can occur.
         return False
+
+
+def git_info(repo="."):
+    def git(*args):
+        return shell_out(
+            ["git", "-C", repo, *args],
+            output_is_log=False,
+            print_file_shell_cmd=False,
+        ).strip()
+
+    try:
+        if git("rev-parse", "--is-inside-work-tree") != "true":
+            return {}
+    except Exception:
+        # Git is unavailable, or repo is not a Git working tree.
+        return {}
+
+    dirty = bool(git("status", "--porcelain"))
+    dirty_state = "yes" if dirty else "no"
+    return {
+        "csb-branch": git("branch", "--show-current"),
+        "csb-commit": git("rev-parse", "HEAD"),
+        "csb-short_commit": git("rev-parse", "--short", "HEAD"),
+        "csb-tags": git("tag", "--points-at", "HEAD").splitlines(),
+        "csb-dirty": dirty_state,
+    }
