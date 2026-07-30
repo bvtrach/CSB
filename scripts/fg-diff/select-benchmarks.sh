@@ -12,8 +12,12 @@ export FLAMEGRAPH="$(realpath ./deps/FlameGraph)"
 mkdir -p logs
 
 export CSB_NO_CLEAN_BENCH=1
+c=0
+N_ARGS="$#"
 for i in $*; do
+    c=$((c+1))
     fbase=$(basename $i .json)
+    echo "[$(date)] Benchmarking ${i} ${c}/${N_ARGS}"
     ./scripts/run-single.sh $(realpath "$i") > ./logs/$fbase.stdout 2> ./logs/$fbase.stderr || true
 done
 
