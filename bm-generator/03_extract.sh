@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: MIT
 
 
+source helper/bm-generator-lib.sh
+
  : ${DIR_PROG:="./deserialized"}
  : ${DIR_OUT:="./extracted"}
  : ${MINCALLS:=10}
@@ -21,6 +23,10 @@ fi
 DIR_PROG_ABS="`readlink -e ${DIR_PROG}`"
 
 files=`find "${DIR_PROG_ABS}" -maxdepth 1 -name '*.prog'`
+if [ -z "${files}" ]; then
+  echo "No syzkaller programs found in ${DIR_PROG_ABS}." >&2
+  exit 1
+fi
 
 SCRIPT_SYZ_SRC="helper/find_syzkaller_src.sh"
  : ${DIR_SYZ_SRC:=$(${SCRIPT_SYZ_SRC})}
@@ -53,7 +59,9 @@ for file in $files; do
   echo $file
   dir="${DIR_OUT_ABS}/$i"
   mkdir -p "${dir}"
-  bin/syz-extraction -prog "${file}" -deserialize "${dir}" -minCalls ${MINCALLS} &
+  prog_os="$(prog_target_os "${file}")"
+  prog_arch="$(prog_target_arch "${file}")"
+  bin/syz-extraction -os "${prog_os}" -arch "${prog_arch}" -prog "${file}" -deserialize "${dir}" -minCalls ${MINCALLS} &
   i=$(($i + 1))
 done
 
