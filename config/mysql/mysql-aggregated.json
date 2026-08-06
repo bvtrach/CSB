@@ -50,6 +50,18 @@
   },
   "applications": [
     {
+      "name": "mysql_min_mysql_recvfrom_sendto_23_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_recvfrom_sendto_32_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
       "name": "mysql_min_mysql_brk_missing_0_0",
       "operations": [
         1024
@@ -465,18 +477,6 @@
     },
     {
       "name": "mysql_min_mysql_readlinkat_missing_36_0",
-      "operations": [
-        1024
-      ]
-    },
-    {
-      "name": "mysql_min_mysql_recvfrom_sendto_23_0",
-      "operations": [
-        1024
-      ]
-    },
-    {
-      "name": "mysql_min_mysql_recvfrom_sendto_32_0",
       "operations": [
         1024
       ]
