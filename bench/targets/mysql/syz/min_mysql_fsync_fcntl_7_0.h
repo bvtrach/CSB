@@ -21,6 +21,7 @@
 #define MMAP_OFFSET 0x20000000ul
 #define MMAP_LENGTH 0x1000000ul
 const static uint64_t UNIQUE_VAR(maxWriteBufferSize) = 0ul;
+const static uint64_t UNIQUE_VAR(maxWriteBufferSizeAlignment) = 4096ul;
 const char* UNIQUE_VAR(netops_connect)[0] = {};
 const char* UNIQUE_VAR(netops_accept)[0] = {};
 
@@ -122,7 +123,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 {
 	const char* reason;
 	(void)reason;
-			
+
 	intptr_t res = 0;
 	V_UNUSED(res);
 //  openat arguments: [
@@ -134,17 +135,19 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    mode: open_mode = 0x1ff (2 bytes)
 //  ]
 //  returns fd
-memcpy((void*)(0x2020d580ul+PTR_OFFSET), "./undo_001\000", 11);
-	res = syscall(__NR_openat, UNIQUE_VAR(ctx->dirfd), /*file=*/0x2020d580ul+PTR_OFFSET, /*flags=O_CREAT|O_RDWR*/0x42, /*mode=S_IXOTH|S_IWOTH|S_IROTH|S_IXGRP|S_IWGRP|S_IRGRP|S_IXUSR|S_IWUSR|0x100*/0x1ff);
+memcpy((void*)(0x20eef400ul+PTR_OFFSET), "./undo_001\000", 11);
+	res = syscall(__NR_openat, UNIQUE_VAR(ctx->dirfd), /*file=*/0x20eef400ul+PTR_OFFSET, /*flags=O_NONBLOCK|O_CREAT|O_RDWR*/0x842, /*mode=S_IXOTH|S_IWOTH|S_IROTH|S_IXGRP|S_IWGRP|S_IRGRP|S_IXUSR|S_IWUSR|0x100*/0x1ff);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-	if (res != -1)
+	if (res != -1) {
+		{ int flags = fcntl(res, F_GETFL); if (flags != -1) fcntl(res, F_SETFL, flags | O_NONBLOCK); }
 		UNIQUE_VAR(ctx->r)[0] = res;
+	}
 //  fcntl$setstatus arguments: [
 //    fd: fd (resource)
 //    cmd: const = 0x4 (8 bytes)
 //    flags: fcntl_status = 0x10000 (8 bytes)
 //  ]
-	res = syscall(__NR_fcntl, /*fd=*/UNIQUE_VAR(ctx->r)[0], /*cmd=*/4ul, /*flags=O_DIRECT*/0x10000ul);
+	res = syscall(__NR_fcntl, /*fd=*/UNIQUE_VAR(ctx->r)[0], /*cmd=*/4ul, /*flags=O_NONBLOCK|O_DIRECT*/0x10800ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  fcntl$lock arguments: [
 //    fd: fd (resource)
@@ -161,12 +164,12 @@ memcpy((void*)(0x2020d580ul+PTR_OFFSET), "./undo_001\000", 11);
 //      }
 //    }
 //  ]
-*(uint16_t*)(0x2020d5c0ul+PTR_OFFSET) = 1;
-*(uint16_t*)(0x2020d5c2ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2020d5c8ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2020d5d0ul+PTR_OFFSET) = 0;
-*(uint32_t*)(0x2020d5d8ul+PTR_OFFSET) = 0;
-	res = syscall(__NR_fcntl, /*fd=*/UNIQUE_VAR(ctx->r)[0], /*cmd=F_SETLK*/6ul, /*lock=*/0x2020d5c0ul+PTR_OFFSET);
+*(uint16_t*)(0x20eef440ul+PTR_OFFSET) = 1;
+*(uint16_t*)(0x20eef442ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20eef448ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20eef450ul+PTR_OFFSET) = 0;
+*(uint32_t*)(0x20eef458ul+PTR_OFFSET) = 0;
+	res = syscall(__NR_fcntl, /*fd=*/UNIQUE_VAR(ctx->r)[0], /*cmd=F_SETLK*/6ul, /*lock=*/0x20eef440ul+PTR_OFFSET);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  fsync arguments: [
 //    fd: fd (resource)
@@ -183,736 +186,49 @@ memcpy((void*)(0x2020d580ul+PTR_OFFSET), "./undo_001\000", 11);
 //  ]
 	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
+	for (int i = 0; i < 6; i++) {
+	syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
+	}
 //  fsync arguments: [
 //    fd: fd (resource)
 //  ]
 	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
+	for (int i = 0; i < 13; i++) {
+	syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
+	}
 //  fsync arguments: [
 //    fd: fd (resource)
 //  ]
 	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
+	for (int i = 0; i < 13; i++) {
+	syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
+	}
 //  fsync arguments: [
 //    fd: fd (resource)
 //  ]
 	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
+	for (int i = 0; i < 13; i++) {
+	syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
+	}
 //  fsync arguments: [
 //    fd: fd (resource)
 //  ]
 	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
+	for (int i = 0; i < 13; i++) {
+	syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
+	}
 //  fsync arguments: [
 //    fd: fd (resource)
 //  ]
 	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  fsync arguments: [
-//    fd: fd (resource)
-//  ]
-	res = syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-	close(UNIQUE_VAR(ctx->r)[0]);
+	for (int i = 0; i < 6; i++) {
+	syscall(__NR_fsync, /*fd=*/UNIQUE_VAR(ctx->r)[0]);
+	}
+	{ uint32_t fd = (uint32_t)UNIQUE_VAR(ctx->r)[0]; if (fd > 2) close(fd); }
 	return 0;
 }

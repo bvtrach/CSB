@@ -20,9 +20,10 @@
 #define UNIQUE_STR() UNIQUE_STR_STR(RESOLVE(UNIQUE_ID))
 #define MMAP_OFFSET 0x20000000ul
 #define MMAP_LENGTH 0x1000000ul
-const static uint64_t UNIQUE_VAR(maxWriteBufferSize) = 78ul;
+const static uint64_t UNIQUE_VAR(maxWriteBufferSize) = 4096ul;
+const static uint64_t UNIQUE_VAR(maxWriteBufferSizeAlignment) = 4096ul;
 const char* UNIQUE_VAR(netops_connect)[0] = {};
-const char* UNIQUE_VAR(netops_accept)[1] = {"1w78-3r162-1w22-3r220-1w11-4r266486-1w55-3r41-1w50-2r216-1w11-3r191942-1w55-2r37-1w50-2r216-1w11-3r191932-1w55-2r37-1w50-2r216-1w11-3r191940-1w55-2r37-1w50-2r216-1w11-3r191942-1w55-2r37-1w50-2r216-1w11-3r191953-1w55-2r37-1w50-2r216-1w11-3r191946-1w55-2r37-1w50-2r216-1w11-3r191921-1w55-2r37-1w50-2r216-1w11-3r191948-1w55-2r37-1w50-2r217-1w11-3r191946-1w55-3r43-1w50-2r217-1w11-3r191939-1w55-2r39-1w50-3r221-1w11-3r191943-1w55-2r39-1w50-2r217-1w11-3r191937-1w55-2r39-1w50-2r217-1w11-3r191940-1w55-2r39-1w50-2r217-1w11-3r191904-1w55-2r39-1w50-2r217-1w11-3r191927-1w55-2r39-1w50-2r217-1w11-3r191945-1w55-2r39-1w50-2r217-1w11-3r191929-1w55-2r39-1w50-2r217-1w11-3r191943-1w55-2r39-1w50-2r217-1w11-3r191949-1w55-2r39-1w50-2r5"};
+const char* UNIQUE_VAR(netops_accept)[1] = {"1w78-3r162-1w22-3r220-1w11-4r266486-1w55-1r33-1w50-1r212-1w11-1r191934-1w55-1r33-1w50-1r212-1w11-1r191924-1w55-1r33-1w50-9r384576-1w11-1r191945-1w55-1r33-1w50-7r384316-1w11-1r191940-1w55-1r33-1w50-12r576769-1w11-1r191929-1w55-1r35-1w50-6r384293-1w11-1r191919-1w55-1r35-1w50-7r576258-1w11-2r191945-1w55-1r35-1w50-2r5"};
 
 #include <endian.h>
 #include <errno.h>
@@ -157,8 +158,8 @@ UNIQUE_FUNC(bm_target_reg)(thread_ctx_t* ctx)
 //    }
 //    optlen: len = 0x4 (8 bytes)
 //  ]
-*(uint32_t*)(0x20332640ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_setsockopt, /*fd=*/UNIQUE_VAR(ctx->r)[0], /*level=*/1, /*optname=SO_REUSEADDR*/2, /*optval=*/0x20332640ul+PTR_OFFSET, /*optlen=*/4ul);
+*(uint32_t*)(0x208bb500ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_setsockopt, /*fd=*/UNIQUE_VAR(ctx->r)[0], /*level=*/1, /*optname=SO_REUSEADDR*/2, /*optval=*/0x208bb500ul+PTR_OFFSET, /*optlen=*/4ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  setsockopt$inet6_int arguments: [
 //    fd: sock_in6 (resource)
@@ -169,8 +170,8 @@ UNIQUE_FUNC(bm_target_reg)(thread_ctx_t* ctx)
 //    }
 //    optlen: len = 0x4 (8 bytes)
 //  ]
-*(uint32_t*)(0x20332680ul+PTR_OFFSET) = 0;
-	res = syscall(__NR_setsockopt, /*fd=*/UNIQUE_VAR(ctx->r)[0], /*level=*/0x29, /*optname=IPV6_V6ONLY*/0x1a, /*optval=*/0x20332680ul+PTR_OFFSET, /*optlen=*/4ul);
+*(uint32_t*)(0x208bb540ul+PTR_OFFSET) = 0;
+	res = syscall(__NR_setsockopt, /*fd=*/UNIQUE_VAR(ctx->r)[0], /*level=*/0x29, /*optname=IPV6_V6ONLY*/0x1a, /*optval=*/0x208bb540ul+PTR_OFFSET, /*optlen=*/4ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  bind$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -187,11 +188,11 @@ UNIQUE_FUNC(bm_target_reg)(thread_ctx_t* ctx)
 //    }
 //    addrlen: len = 0x1c (8 bytes)
 //  ]
-*(uint16_t*)(0x203326c0ul+PTR_OFFSET) = 0xa;
-*(uint16_t*)(0x203326c2ul+PTR_OFFSET) = htobe16(0xcea);
-*(uint32_t*)(0x203326c4ul+PTR_OFFSET) = htobe32(0);
-memset((void*)(0x203326c8ul+PTR_OFFSET), 0, 16);
-*(uint32_t*)(0x203326d8ul+PTR_OFFSET) = 0;
+*(uint16_t*)(0x208bb580ul+PTR_OFFSET) = 0xa;
+*(uint16_t*)(0x208bb582ul+PTR_OFFSET) = htobe16(0xcea);
+*(uint32_t*)(0x208bb584ul+PTR_OFFSET) = htobe32(0);
+memset((void*)(0x208bb588ul+PTR_OFFSET), 0, 16);
+*(uint32_t*)(0x208bb598ul+PTR_OFFSET) = 0;
 	res = syscall(__NR_bind, /*fd=*/UNIQUE_VAR(ctx->r)[0], UNIQUE_VAR(ctx->bind6_arg), sizeof(*(UNIQUE_VAR(ctx->bind6_arg))));
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  listen arguments: [
@@ -219,8 +220,8 @@ memset((void*)(0x203326c8ul+PTR_OFFSET), 0, 16);
 //    }
 //    optlen: len = 0x4 (8 bytes)
 //  ]
-*(uint32_t*)(0x203347c0ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_setsockopt, /*fd=*/UNIQUE_VAR(ctx->r)[1], /*level=*/1, /*optname=SO_REUSEADDR*/2, /*optval=*/0x203347c0ul+PTR_OFFSET, /*optlen=*/4ul);
+*(uint32_t*)(0x208bf900ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_setsockopt, /*fd=*/UNIQUE_VAR(ctx->r)[1], /*level=*/1, /*optname=SO_REUSEADDR*/2, /*optval=*/0x208bf900ul+PTR_OFFSET, /*optlen=*/4ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  bind$unix arguments: [
 //    fd: sock_unix (resource)
@@ -228,15 +229,15 @@ memset((void*)(0x203326c8ul+PTR_OFFSET), 0, 16);
 //      union sockaddr_un {
 //        file: sockaddr_un_file {
 //          family: unix_socket_family = 0x1 (2 bytes)
-//          path: buffer: {2f 76 61 72 2f 6c 69 62 2f 6d 79 73 71 6c 2f 6d 79 73 71 6c 2e 73 6f 63 6b 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00} (length 0x6c)
+//          path: buffer: {2e 2f 76 61 72 2f 6c 69 62 2f 6d 79 73 71 6c 2f 6d 79 73 71 6c 2e 73 6f 63 6b 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00} (length 0x6c)
 //        }
 //      }
 //    }
 //    addrlen: len = 0x6e (8 bytes)
 //  ]
-*(uint16_t*)(0x20334800ul+PTR_OFFSET) = 1;
-memcpy((void*)(0x20334802ul+PTR_OFFSET), "/var/lib/mysql/mysql.sock\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000", 108);
-	res = syscall(__NR_bind, /*fd=*/UNIQUE_VAR(ctx->r)[1], /*addr=*/0x20334800ul+PTR_OFFSET, sizeof(sa_family_t));
+*(uint16_t*)(0x208bfac0ul+PTR_OFFSET) = 1;
+memcpy((void*)(0x208bfac2ul+PTR_OFFSET), "./var/lib/mysql/mysql.sock\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000", 108);
+	res = syscall(__NR_bind, /*fd=*/UNIQUE_VAR(ctx->r)[1], /*addr=*/0x208bfac0ul+PTR_OFFSET, sizeof(sa_family_t));
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  listen arguments: [
 //    fd: sock (resource)
@@ -259,7 +260,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 {
 	const char* reason;
 	(void)reason;
-			
+
 	intptr_t res = 0;
 	V_UNUSED(res);
 //  accept$inet6 arguments: [
@@ -280,8 +281,8 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //  ]
 //  returns sock_in6
-*(uint32_t*)(0x203b2740ul+PTR_OFFSET) = 0x80;
-	res = syscall(__NR_accept, /*fd=*/UNIQUE_VAR(ctx->r)[0], /*peer=*/0x203b2700ul+PTR_OFFSET, /*peerlen=*/0x203b2740ul+PTR_OFFSET);
+*(uint32_t*)(0x20c25180ul+PTR_OFFSET) = 0x80;
+	res = syscall(__NR_accept, /*fd=*/UNIQUE_VAR(ctx->r)[0], /*peer=*/0x20c25140ul+PTR_OFFSET, /*peerlen=*/0x20c25180ul+PTR_OFFSET);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 	if (res != -1)
 		UNIQUE_VAR(ctx->r)[2] = res;
@@ -303,14 +304,14 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //    arglen: len = 0x4 (8 bytes)
 //  ]
-*(uint16_t*)(0x203b2900ul+PTR_OFFSET) = 1;
-*(uint16_t*)(0x203b2902ul+PTR_OFFSET) = 0;
-*(uint16_t*)(0x203b2904ul+PTR_OFFSET) = 0;
-*(uint8_t*)(0x203b2906ul+PTR_OFFSET) = 0;
-*(uint8_t*)(0x203b2907ul+PTR_OFFSET) = 0;
-*(uint8_t*)(0x203b2908ul+PTR_OFFSET) = 0;
-*(uint16_t*)(0x203b290aul+PTR_OFFSET) = 0;
-	res = syscall(__NR_setsockopt, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*level=*/6, /*opt=*/1, /*arg=*/0x203b2900ul+PTR_OFFSET, /*arglen=*/4ul);
+*(uint16_t*)(0x20c25600ul+PTR_OFFSET) = 1;
+*(uint16_t*)(0x20c25602ul+PTR_OFFSET) = 0;
+*(uint16_t*)(0x20c25604ul+PTR_OFFSET) = 0;
+*(uint8_t*)(0x20c25606ul+PTR_OFFSET) = 0;
+*(uint8_t*)(0x20c25607ul+PTR_OFFSET) = 0;
+*(uint8_t*)(0x20c25608ul+PTR_OFFSET) = 0;
+*(uint16_t*)(0x20c2560aul+PTR_OFFSET) = 0;
+	res = syscall(__NR_setsockopt, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*level=*/6, /*opt=*/1, /*arg=*/0x20c25600ul+PTR_OFFSET, /*arglen=*/4ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  getpeername arguments: [
 //    fd: sock (resource)
@@ -328,8 +329,8 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //      len = 0x80 (4 bytes)
 //    }
 //  ]
-*(uint32_t*)(0x203b29c0ul+PTR_OFFSET) = 0x80;
-	res = syscall(__NR_getpeername, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*peer=*/0x203b2940ul+PTR_OFFSET, /*peerlen=*/0x203b29c0ul+PTR_OFFSET);
+*(uint32_t*)(0x20c256c0ul+PTR_OFFSET) = 0x80;
+	res = syscall(__NR_getpeername, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*peer=*/0x20c25640ul+PTR_OFFSET, /*peerlen=*/0x20c256c0ul+PTR_OFFSET);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  setsockopt$sock_int arguments: [
 //    fd: sock (resource)
@@ -340,8 +341,8 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //    optlen: len = 0x4 (8 bytes)
 //  ]
-*(uint32_t*)(0x203b2a00ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_setsockopt, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*level=*/1, /*optname=SO_KEEPALIVE*/9, /*optval=*/0x203b2a00ul+PTR_OFFSET, /*optlen=*/4ul);
+*(uint32_t*)(0x20c25700ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_setsockopt, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*level=*/1, /*optname=SO_KEEPALIVE*/9, /*optval=*/0x20c25700ul+PTR_OFFSET, /*optlen=*/4ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -365,7 +366,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203b2ac0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c257c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  ppoll arguments: [
 //    fds: ptr[in, array[pollfd]] {
@@ -391,13 +392,13 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //    size: len = 0x8 (8 bytes)
 //  ]
-*(uint32_t*)(0x203b2b00ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x203b2b04ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x203b2b06ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x203b2b40ul+PTR_OFFSET) = 0xa;
-*(uint64_t*)(0x203b2b48ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x203b2b80ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x203b2b00ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x203b2b40ul+PTR_OFFSET, /*sigmask=*/0x203b2b80ul+PTR_OFFSET, /*size=*/8ul);
+*(uint32_t*)(0x20c25800ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
+*(uint16_t*)(0x20c25804ul+PTR_OFFSET) = 3;
+*(uint16_t*)(0x20c25806ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20c25840ul+PTR_OFFSET) = 0xa;
+*(uint64_t*)(0x20c25848ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20c25880ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_ppoll, /*fds=*/0x20c25800ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20c25840ul+PTR_OFFSET, /*sigmask=*/0x20c25880ul+PTR_OFFSET, /*size=*/8ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -409,7 +410,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203b2bc0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c258c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -421,7 +422,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203b2c00ul+PTR_OFFSET, /*len=*/0x9aul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c25900ul+PTR_OFFSET, /*len=*/0x9aul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -445,7 +446,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203b2d00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c25a00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  ppoll arguments: [
 //    fds: ptr[in, array[pollfd]] {
@@ -471,13 +472,13 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //    size: len = 0x8 (8 bytes)
 //  ]
-*(uint32_t*)(0x203b2d40ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x203b2d44ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x203b2d46ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x203b2d80ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x203b2d88ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x203b2dc0ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x203b2d40ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x203b2d80ul+PTR_OFFSET, /*sigmask=*/0x203b2dc0ul+PTR_OFFSET, /*size=*/8ul);
+*(uint32_t*)(0x20c25a40ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
+*(uint16_t*)(0x20c25a44ul+PTR_OFFSET) = 3;
+*(uint16_t*)(0x20c25a46ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20c25a80ul+PTR_OFFSET) = 0x7080;
+*(uint64_t*)(0x20c25a88ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20c25ac0ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_ppoll, /*fds=*/0x20c25a40ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20c25a80ul+PTR_OFFSET, /*sigmask=*/0x20c25ac0ul+PTR_OFFSET, /*size=*/8ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -489,7 +490,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203b2e00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c25b00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -501,7 +502,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203b2e40ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c25b40ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -525,7 +526,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203ff580ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2010ee80ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  ppoll arguments: [
 //    fds: ptr[in, array[pollfd]] {
@@ -551,13 +552,13 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //    size: len = 0x8 (8 bytes)
 //  ]
-*(uint32_t*)(0x2041f580ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x2041f584ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x2041f586ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2041f5c0ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x2041f5c8ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2041f600ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x2041f580ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x2041f5c0ul+PTR_OFFSET, /*sigmask=*/0x2041f600ul+PTR_OFFSET, /*size=*/8ul);
+*(uint32_t*)(0x2012f480ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
+*(uint16_t*)(0x2012f484ul+PTR_OFFSET) = 3;
+*(uint16_t*)(0x2012f486ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x2012f4c0ul+PTR_OFFSET) = 0x7080;
+*(uint64_t*)(0x2012f4c8ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x2012f500ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_ppoll, /*fds=*/0x2012f480ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x2012f4c0ul+PTR_OFFSET, /*sigmask=*/0x2012f500ul+PTR_OFFSET, /*size=*/8ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -569,7 +570,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2041f640ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2012f600ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -581,7 +582,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2041f680ul+PTR_OFFSET, /*len=*/0x2edb5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2012f700ul+PTR_OFFSET, /*len=*/0x2edb5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -593,7 +594,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2043f640ul+PTR_OFFSET, /*len=*/0x12339ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2014f840ul+PTR_OFFSET, /*len=*/0x12339ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -612,68 +613,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x206f5000ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x206f5040ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x206f5044ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x206f5046ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x206f5080ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x206f5088ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x206f50c0ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x206f5040ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x206f5080ul+PTR_OFFSET, /*sigmask=*/0x206f50c0ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x206f5100ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0x21 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x206f5140ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ae3e80ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -692,24 +637,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x207194c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0xd4 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20719500ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20124100ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -722,62 +655,6 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
 	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20767200ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x20767240ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20767244ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20767246ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20767280ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x20767288ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x207672c0ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20767240ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20767280ul+PTR_OFFSET, /*sigmask=*/0x207672c0ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20767300ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -789,7 +666,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20767340ul+PTR_OFFSET, /*len=*/0x2edbeul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2019e4c0ul+PTR_OFFSET, /*len=*/0x2edbeul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -808,24 +685,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20815c80ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0x21 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20815cc0ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x204ac580ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -844,24 +709,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2083b840ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0xd4 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2083b880ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c1cdc0ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -874,62 +727,6 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
 	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20889f80ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x20889fc0ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20889fc4ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20889fc6ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2088a000ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x2088a008ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2088a040ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20889fc0ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x2088a000ul+PTR_OFFSET, /*sigmask=*/0x2088a040ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2088a080ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -941,7 +738,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2088a0c0ul+PTR_OFFSET, /*len=*/0x2edb4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c99980ul+PTR_OFFSET, /*len=*/0x2edb4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -960,24 +757,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20937000ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0x21 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20937040ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20d9e680ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -996,36 +781,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2095bdc0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0xd4 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2095be00ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2053a140ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1037,7 +798,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x209a9500ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x205bf4c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  ppoll arguments: [
 //    fds: ptr[in, array[pollfd]] {
@@ -1063,25 +824,13 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //    size: len = 0x8 (8 bytes)
 //  ]
-*(uint32_t*)(0x209a9540ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x209a9544ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x209a9546ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x209a9580ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x209a9588ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x209a95c0ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x209a9540ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x209a9580ul+PTR_OFFSET, /*sigmask=*/0x209a95c0ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x209a9600ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+*(uint32_t*)(0x205bfb00ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
+*(uint16_t*)(0x205bfb04ul+PTR_OFFSET) = 3;
+*(uint16_t*)(0x205bfb06ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x205bfb40ul+PTR_OFFSET) = 0x7080;
+*(uint64_t*)(0x205bfb48ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x205bfb80ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_ppoll, /*fds=*/0x205bfb00ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x205bfb40ul+PTR_OFFSET, /*sigmask=*/0x205bfb80ul+PTR_OFFSET, /*size=*/8ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1093,31 +842,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x209a9640ul+PTR_OFFSET, /*len=*/0x2edbcul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20a5bb80ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x205bfc00ul+PTR_OFFSET, /*len=*/0x2edbcul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1129,19 +854,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20a5bbc0ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x206b8d40ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1153,7 +866,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20a7f740ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20e0a040ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1165,75 +878,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20a7f780ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ace080ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x20ace0c0ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20ace0c4ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20ace0c6ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20ace100ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x20ace108ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20ace140ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20ace0c0ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20ace100ul+PTR_OFFSET, /*sigmask=*/0x20ace140ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ace180ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20e0a080ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1245,31 +890,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ace1c0ul+PTR_OFFSET, /*len=*/0x2edbeul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20b7d500ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20e8e4c0ul+PTR_OFFSET, /*len=*/0x2edbeul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1281,31 +902,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20b7d540ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ba24c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20f91900ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1317,7 +914,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ba2500ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x207348c0ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1330,62 +927,6 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
 	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20bf1e00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x20bf1e40ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20bf1e44ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20bf1e46ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20bf1e80ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x20bf1e88ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20bf1ec0ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20bf1e40ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20bf1e80ul+PTR_OFFSET, /*sigmask=*/0x20bf1ec0ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20bf1f00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1397,7 +938,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20bf1f40ul+PTR_OFFSET, /*len=*/0x2edc9ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x207b7e40ul+PTR_OFFSET, /*len=*/0x2edc9ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1416,24 +957,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ca1280ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0x21 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ca12c0ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x208bfd80ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1452,92 +981,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20cc5440ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0xd4 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20cc5480ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20d13580ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x20d135c0ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20d135c4ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20d135c6ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20d13600ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x20d13608ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20d13640ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20d135c0ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20d13600ul+PTR_OFFSET, /*sigmask=*/0x20d13640ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20d13680ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20018000ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1549,31 +998,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20d136c0ul+PTR_OFFSET, /*len=*/0x2edc2ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20dc4e00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20091740ul+PTR_OFFSET, /*len=*/0x2edc2ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1585,19 +1010,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20dc4e40ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2018c240ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1609,43 +1022,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20de87c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0xd4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20de8800ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20e37300ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2095bb80ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  ppoll arguments: [
 //    fds: ptr[in, array[pollfd]] {
@@ -1671,25 +1048,13 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //    size: len = 0x8 (8 bytes)
 //  ]
-*(uint32_t*)(0x20e37340ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20e37344ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20e37346ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20e37380ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x20e37388ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20e373c0ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20e37340ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20e37380ul+PTR_OFFSET, /*sigmask=*/0x20e373c0ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20e37400ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+*(uint32_t*)(0x2095bec0ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
+*(uint16_t*)(0x2095bec4ul+PTR_OFFSET) = 3;
+*(uint16_t*)(0x2095bec6ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x2095bf00ul+PTR_OFFSET) = 0x7080;
+*(uint64_t*)(0x2095bf08ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x2095bf40ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_ppoll, /*fds=*/0x2095bec0ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x2095bf00ul+PTR_OFFSET, /*sigmask=*/0x2095bf40ul+PTR_OFFSET, /*size=*/8ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1701,19 +1066,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20e37440ul+PTR_OFFSET, /*len=*/0x2eda9ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2095c140ul+PTR_OFFSET, /*len=*/0x2eda9ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1725,43 +1078,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ee5380ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x21 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ee53c0ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20f0f340ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20221300ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1773,7 +1090,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20f0f380ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20221340ul+PTR_OFFSET, /*len=*/0xd4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1786,62 +1103,6 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
 	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20f61c00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x20f61c40ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20f61c44ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20f61c46ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20f61c80ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x20f61c88ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20f61cc0ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20f61c40ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20f61c80ul+PTR_OFFSET, /*sigmask=*/0x20f61cc0ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20f61d00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1853,7 +1114,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20f61d40ul+PTR_OFFSET, /*len=*/0x2edc4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x202a3100ul+PTR_OFFSET, /*len=*/0x2edc4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1866,18 +1127,6 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
 	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2000ee40ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1889,7 +1138,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2000ee80ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203f1d40ul+PTR_OFFSET, /*len=*/0x21ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -1908,92 +1157,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2003b200ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0xd5 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2003b240ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2008b2c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x2008b300ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x2008b304ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x2008b306ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2008b340ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x2008b348ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2008b380ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x2008b300ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x2008b340ul+PTR_OFFSET, /*sigmask=*/0x2008b380ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2008b3c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20b4ffc0ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2005,75 +1174,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2008b400ul+PTR_OFFSET, /*len=*/0x2edc2ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x201385c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x20138600ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20138604ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20138606ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20138640ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x20138648ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20138680ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20138600ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20138640ul+PTR_OFFSET, /*sigmask=*/0x20138680ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x201386c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20bcd780ul+PTR_OFFSET, /*len=*/0x2edc2ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2085,31 +1186,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20138700ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2015da80ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20cd71c0ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2121,75 +1198,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2015dac0ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x201a9540ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x201a9580ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x201a9584ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x201a9586ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x201a95c0ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x201a95c8ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x201a9600ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x201a9580ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x201a95c0ul+PTR_OFFSET, /*sigmask=*/0x201a9600ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x201a9640ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2043ba00ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2201,31 +1210,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x201a9680ul+PTR_OFFSET, /*len=*/0x2edbbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20257640ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x204bc840ul+PTR_OFFSET, /*len=*/0x2edbbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2237,19 +1222,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20257680ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x205bca40ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2261,7 +1234,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2027d9c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20d369c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  ppoll arguments: [
 //    fds: ptr[in, array[pollfd]] {
@@ -2287,25 +1260,13 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //    size: len = 0x8 (8 bytes)
 //  ]
-*(uint32_t*)(0x2027da00ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x2027da04ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x2027da06ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2027da40ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x2027da48ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2027da80ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x2027da00ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x2027da40ul+PTR_OFFSET, /*sigmask=*/0x2027da80ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2027dac0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+*(uint32_t*)(0x20d36a00ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
+*(uint16_t*)(0x20d36a04ul+PTR_OFFSET) = 3;
+*(uint16_t*)(0x20d36a06ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20d36a40ul+PTR_OFFSET) = 0x7080;
+*(uint64_t*)(0x20d36a48ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20d36a80ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_ppoll, /*fds=*/0x20d36a00ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20d36a40ul+PTR_OFFSET, /*sigmask=*/0x20d36a80ul+PTR_OFFSET, /*size=*/8ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2317,75 +1278,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2027db00ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x202cc1c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x202cc200ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x202cc204ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x202cc206ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x202cc240ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x202cc248ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x202cc280ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x202cc200ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x202cc240ul+PTR_OFFSET, /*sigmask=*/0x202cc280ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x202cc2c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20d36b00ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2397,31 +1290,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x202cc300ul+PTR_OFFSET, /*len=*/0x2edbful, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2037b480ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20dbb000ul+PTR_OFFSET, /*len=*/0x2edbful, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2433,19 +1302,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2037b4c0ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ebdf80ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2457,7 +1314,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2039de40ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2094c300ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2469,7 +1326,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2039de80ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2094c340ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2482,62 +1339,6 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
 	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203ecb40ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x203ecb80ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x203ecb84ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x203ecb86ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x203ecbc0ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x203ecbc8ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x203ecc00ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x203ecb80ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x203ecbc0ul+PTR_OFFSET, /*sigmask=*/0x203ecc00ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203ecc40ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2549,7 +1350,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203ecc80ul+PTR_OFFSET, /*len=*/0x2edb9ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x209d1980ul+PTR_OFFSET, /*len=*/0x2edb9ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2568,24 +1369,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2049be00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0x23 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2049be40ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20b192c0ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2598,98 +1387,6 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
 	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x204c1940ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0xd5 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x204c1980ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2050e6c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x2050e700ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x2050e704ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x2050e706ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2050e740ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x2050e748ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2050e780ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x2050e700ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x2050e740ul+PTR_OFFSET, /*sigmask=*/0x2050e780ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2050e7c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2701,67 +1398,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2050e800ul+PTR_OFFSET, /*len=*/0x2edbcul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x205bc380ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x23 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x205bc3c0ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x205e16c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203a0c80ul+PTR_OFFSET, /*len=*/0x2edbcul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2773,19 +1410,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x205e1700ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20bf6500ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2797,7 +1422,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20637840ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c88400ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  ppoll arguments: [
 //    fds: ptr[in, array[pollfd]] {
@@ -2823,25 +1448,13 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //    size: len = 0x8 (8 bytes)
 //  ]
-*(uint32_t*)(0x20637880ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20637884ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20637886ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x206378c0ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x206378c8ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20637900ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20637880ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x206378c0ul+PTR_OFFSET, /*sigmask=*/0x20637900ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20637940ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+*(uint32_t*)(0x20c88740ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
+*(uint16_t*)(0x20c88744ul+PTR_OFFSET) = 3;
+*(uint16_t*)(0x20c88746ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20c88780ul+PTR_OFFSET) = 0x7080;
+*(uint64_t*)(0x20c88788ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20c887c0ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_ppoll, /*fds=*/0x20c88740ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20c88780ul+PTR_OFFSET, /*sigmask=*/0x20c887c0ul+PTR_OFFSET, /*size=*/8ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2853,31 +1466,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20637980ul+PTR_OFFSET, /*len=*/0x2ed98ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x206e5300ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c88840ul+PTR_OFFSET, /*len=*/0x2ed98ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2889,31 +1478,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x206e5340ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2070ba80ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20d8c240ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2925,7 +1490,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2070bac0ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20539e80ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -2938,62 +1503,6 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
 	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20757bc0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x20757c00ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20757c04ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20757c06ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20757c40ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x20757c48ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20757c80ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20757c00ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20757c40ul+PTR_OFFSET, /*sigmask=*/0x20757c80ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20757cc0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3005,7 +1514,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20757d00ul+PTR_OFFSET, /*len=*/0x2edaful, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x205b8400ul+PTR_OFFSET, /*len=*/0x2edaful, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3024,24 +1533,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20808280ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0x23 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x208082c0ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x206ee940ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3065,87 +1562,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2082d800ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0xd5 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2082d840ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2087b540ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x2087b580ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x2087b584ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x2087b586ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2087b5c0ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x2087b5c8ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x2087b600ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x2087b580ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x2087b5c0ul+PTR_OFFSET, /*sigmask=*/0x2087b600ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2087b640ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20e48200ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3157,67 +1574,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2087b680ul+PTR_OFFSET, /*len=*/0x2edc1ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20928400ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x23 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20928440ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2097fd80ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ec6980ul+PTR_OFFSET, /*len=*/0x2edc1ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3229,75 +1586,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2097fdc0ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x209cd4c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x209cd500ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x209cd504ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x209cd506ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x209cd540ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x209cd548ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x209cd580ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x209cd500ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x209cd540ul+PTR_OFFSET, /*sigmask=*/0x209cd580ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x209cd5c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x2077a640ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3309,31 +1598,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x209cd600ul+PTR_OFFSET, /*len=*/0x2edb1ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20a7cd00ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x207f2c00ul+PTR_OFFSET, /*len=*/0x2edb1ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3345,111 +1610,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20a7cd40ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20aa1700ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0xd5 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20aa1740ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0xb (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0xbul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20afba40ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  ppoll arguments: [
-//    fds: ptr[in, array[pollfd]] {
-//      array[pollfd] {
-//        pollfd {
-//          fd: fd (resource)
-//          events: pollfd_events = 0x3 (2 bytes)
-//          revents: const = 0x0 (2 bytes)
-//        }
-//      }
-//    }
-//    nfds: len = 0x1 (8 bytes)
-//    tsp: ptr[in, timespec] {
-//      timespec {
-//        sec: time_sec (resource)
-//        nsec: time_nsec (resource)
-//      }
-//    }
-//    sigmask: ptr[in, array[intptr]] {
-//      array[intptr] {
-//        intptr = 0x1 (8 bytes)
-//      }
-//    }
-//    size: len = 0x8 (8 bytes)
-//  ]
-*(uint32_t*)(0x20afba80ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20afba84ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20afba86ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20afbac0ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x20afbac8ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20afbb00ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20afba80ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20afbac0ul+PTR_OFFSET, /*sigmask=*/0x20afbb00ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20afbb40ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20918100ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3461,67 +1622,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20afbb80ul+PTR_OFFSET, /*len=*/0x2edbful, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x37 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x37ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ba8ac0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x23 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20ba8b00ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  sendto$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[in, buffer] {
-//      buffer: {} (length 0x0)
-//    }
-//    len: len = 0x32 (8 bytes)
-//    f: send_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_sendto, /*fd=*/UNIQUE_VAR(ctx->r)[2], UNIQUE_VAR(ctx->writeBuffer), /*len=*/0x32ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20bcee80ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x201b0200ul+PTR_OFFSET, /*len=*/0x2edbful, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3533,7 +1634,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20bceec0ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20a16b40ul+PTR_OFFSET, /*len=*/0xd5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3557,7 +1658,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c1c5c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20a97840ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  ppoll arguments: [
 //    fds: ptr[in, array[pollfd]] {
@@ -3583,25 +1684,13 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    }
 //    size: len = 0x8 (8 bytes)
 //  ]
-*(uint32_t*)(0x20c1c600ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
-*(uint16_t*)(0x20c1c604ul+PTR_OFFSET) = 3;
-*(uint16_t*)(0x20c1c606ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20c1c640ul+PTR_OFFSET) = 0x7080;
-*(uint64_t*)(0x20c1c648ul+PTR_OFFSET) = 0;
-*(uint64_t*)(0x20c1c680ul+PTR_OFFSET) = 1;
-	res = syscall(__NR_ppoll, /*fds=*/0x20c1c600ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20c1c640ul+PTR_OFFSET, /*sigmask=*/0x20c1c680ul+PTR_OFFSET, /*size=*/8ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c1c6c0ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+*(uint32_t*)(0x20a97d00ul+PTR_OFFSET) = UNIQUE_VAR(ctx->r)[2];
+*(uint16_t*)(0x20a97d04ul+PTR_OFFSET) = 3;
+*(uint16_t*)(0x20a97d06ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20a97d40ul+PTR_OFFSET) = 0x7080;
+*(uint64_t*)(0x20a97d48ul+PTR_OFFSET) = 0;
+*(uint64_t*)(0x20a97d80ul+PTR_OFFSET) = 1;
+	res = syscall(__NR_ppoll, /*fds=*/0x20a97d00ul+PTR_OFFSET, /*nfds=*/1ul, /*tsp=*/0x20a97d40ul+PTR_OFFSET, /*sigmask=*/0x20a97d80ul+PTR_OFFSET, /*size=*/8ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3613,7 +1702,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20c1c700ul+PTR_OFFSET, /*len=*/0x2edc5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20a97f80ul+PTR_OFFSET, /*len=*/0x2edc5ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3632,24 +1721,12 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    buf: ptr[out, buffer] {
 //      buffer: (DirOut)
 //    }
-//    len: len = 0x4 (8 bytes)
-//    f: recv_flags = 0x40 (8 bytes)
-//    addr: nil
-//    addrlen: len = 0x0 (8 bytes)
-//  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20cc9440ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
-	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
-//  recvfrom$inet6 arguments: [
-//    fd: sock_in6 (resource)
-//    buf: ptr[out, buffer] {
-//      buffer: (DirOut)
-//    }
 //    len: len = 0x23 (8 bytes)
 //    f: recv_flags = 0x40 (8 bytes)
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20cc9480ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20bad3c0ul+PTR_OFFSET, /*len=*/0x23ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  sendto$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3673,7 +1750,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20cef600ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20320580ul+PTR_OFFSET, /*len=*/4ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  recvfrom$inet6 arguments: [
 //    fd: sock_in6 (resource)
@@ -3685,7 +1762,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //    addr: nil
 //    addrlen: len = 0x0 (8 bytes)
 //  ]
-	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x20cef640ul+PTR_OFFSET, /*len=*/1ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
+	res = syscall(__NR_recvfrom, /*fd=*/UNIQUE_VAR(ctx->r)[2], /*buf=*/0x203205c0ul+PTR_OFFSET, /*len=*/1ul, /*f=MSG_DONTWAIT*/0x40ul, /*addr=*/0ul, /*addrlen=*/0ul);
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 //  shutdown arguments: [
 //    fd: sock (resource)
@@ -3696,7 +1773,7 @@ static inline int UNIQUE_FUNC(bm_dispatch_operation)(thread_ctx_t* ctx, size_t o
 //  close arguments: [
 //    fd: fd (resource)
 //  ]
-	res = syscall(__NR_close, /*fd=*/UNIQUE_VAR(ctx->r)[2]);
+	res = syscall(__NR_close, ({ intptr_t csb_fd = (/*fd=*/UNIQUE_VAR(ctx->r)[2]); (uint32_t)csb_fd <= 2 ? -1 : csb_fd; }));
 	if (res == -1 ) { assert(!abort_on_fail); UNIQUE_VAR(ctx->num_failed)++;} else {UNIQUE_VAR(ctx->num_succeeded)++;};
 	return 0;
 }
