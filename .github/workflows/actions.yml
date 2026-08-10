@@ -37,7 +37,7 @@ jobs:
         with:
           name: bm-generator-artifacts
           path: |
-            ${{ github.workspace }}/bm-generator/ls_strace.log
+            ${{ github.workspace }}/bm-generator/echo_strace.log
             ${{ github.workspace }}/results
             ${{ github.workspace }}/bench-select
 
@@ -139,14 +139,14 @@ jobs:
   # Run a dummy benchmark to ensure bm-runner works
   Run-Benchmark:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       matrix:
         benchmark:
           -  { prefix: "", prepare_cmd: "" , config: bm_empty }
           -  { prefix: "", prepare_cmd: "" , config: bm_server_redis }
           -  { prefix: "", prepare_cmd: "" , config: rocksdb/rocksdb_aggregated }
-          -  { prefix: "", prepare_cmd: "" , config: mysql/mysql-aggregated }
-          -  { prefix: "", prepare_cmd: "" , config: mysql/mysql-aggregated }
+          -  { prefix: "", prepare_cmd: "" , config: mysql/ci-mysql-aggregated }
           -  { prefix: "CSB_BPFTRACE_FILTER='/ comm == \"runc\" /'", prepare_cmd: "./scripts/bm-external/cgroups/prepare.sh" , config: bm-external/cgroups/runc }
     steps:
       - uses: actions/checkout@v4

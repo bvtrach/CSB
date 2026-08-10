@@ -2,10 +2,10 @@
 # Copyright (C) Huawei Technologies Co., Ltd. 2026. All rights reserved.
 # SPDX-License-Identifier: MIT
 set -e
-export CSB_RESULTS_GROUP="ls"
+export CSB_RESULTS_GROUP="echo"
 source helper/bm-generator-lib.sh
-STRACE_LOG="ls_strace.log"
-APP="ls -la /dev"
+STRACE_LOG="echo_strace.log"
+APP="echo"
 ../scripts/plugins/collect_strace.sh ${STRACE_LOG} ${APP}
 echo "STEP#0: Initializing ..."
 ./00_init.sh
@@ -23,5 +23,7 @@ echo "STEP#6: Preparing ..."
 ./06_prepare.sh
 echo "STEP#7: Generating ..."
 ./07_generate.sh
+echo "STEP#7.5 Reducing test duration"
+sed -i -e 's/60,/5,/g' ../config/${CSB_RESULTS_GROUP}/*.json
 echo "STEP#8: Selecting benchmarks using flamegraph-diff ..."
 ./08_select.sh

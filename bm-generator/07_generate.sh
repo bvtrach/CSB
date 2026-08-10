@@ -3,3 +3,4 @@
 # SPDX-License-Identifier: MIT
 cmake --build ../build --target syz_single.h.in
 cmake --build ../build --target fg_single.json.in
+cmake --build ../build --target syz_program.c.in

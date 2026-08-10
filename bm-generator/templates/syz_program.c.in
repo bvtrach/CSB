@@ -56,7 +56,7 @@ static bool abort_on_fail __attribute__((unused));
 $_begin(NN = [[1; 2]]);
 #define CSB_PROGRAM_NAME "NN"
 #define thread_ctx_t csb_program_ctx_t
-#include "../syz/NN.h"
+#include "./syz/NN.h"
 $_end();
 #undef thread_ctx_t
 #undef CSB_PROGRAM_NAME
