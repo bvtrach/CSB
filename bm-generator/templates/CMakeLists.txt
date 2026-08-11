@@ -19,6 +19,7 @@ add_custom_command(
 
 # Find all single template files
 file(GLOB TEMPLATES *single*.in)
+list(APPEND TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/syz_program.c.in")
 set(SUBDIR $ENV{CSB_RESULTS_GROUP})
 if(SUBDIR)
     message("Generation workspace is set to: ${SUBDIR}")
@@ -96,6 +97,11 @@ foreach(HEADER ${HEADERS})
             set(TARGET ${TEMPLATE_NAME}${HEADER_NAME}_h)
             set(TMPLR_PARAMS -DNCALLS="1" -DNNOPS="1" -DNN="${HEADER_NAME}")
             set(OUTPUT_FILE "${HEADER_DIR}/${SUBDIR}/${HEADER_NAME}.h")
+        elseif(EXTENSION STREQUAL ".c")
+            set(TARGET ${PREFIX}_${HEADER_NAME}_c)
+            set(TMPLR_PARAMS -DNN="${HEADER_NAME}")
+            set(OUTPUT_FILE
+                "${HEADER_DIR}/${SUBDIR}/${PREFIX}_${HEADER_NAME}.c")
         else()
             message(FATAL_ERROR "Unsupported extension ${EXTENSION}")
         endif()

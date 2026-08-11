@@ -41,7 +41,7 @@
     "container_list": {
       "values": [
         [
-          45
+          89
         ]
       ]
     },
@@ -50,13 +50,7 @@
   },
   "applications": [
     {
-      "name": "mysql_min_mysql_recvfrom_sendto_0_0",
-      "operations": [
-        1024
-      ]
-    },
-    {
-      "name": "mysql_min_mysql_recvfrom_sendto_20_0",
+      "name": "mysql_min_mysql_recvfrom_sendto_23_0",
       "operations": [
         1024
       ]
@@ -68,19 +62,145 @@
       ]
     },
     {
-      "name": "mysql_min_mysql_faccessat2_missing_1_0",
+      "name": "mysql_min_mysql_brk_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_fcntl_setsockopt_0_0",
+      "name": "mysql_min_mysql_brk_missing_6_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_fsync_fcntl_3_0",
+      "name": "mysql_min_mysql_capget_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_gettime_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_clock_gettime_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_clock_gettime_1_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_clock_gettime_2_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_clock_gettime_3_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_clock_gettime_4_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_clock_gettime_5_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_clock_gettime_6_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_clock_gettime_7_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_clock_gettime_8_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_clock_gettime_9_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_clock_nanosleep_missing_8_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_epoll_ctl_socket_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_epoll_pwait_epoll_create1_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_faccessat2_missing_5_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_faccessat_missing_4_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_fcntl_fallocate_8_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_fcntl_missing_1_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_fcntl_pread64_1_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_fsync_fcntl_12_0",
       "operations": [
         1024
       ]
@@ -98,109 +218,103 @@
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_101_0",
+      "name": "mysql_min_mysql_futex_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_104_0",
+      "name": "mysql_min_mysql_getcwd_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_109_0",
+      "name": "mysql_min_mysql_getegid_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_24_0",
+      "name": "mysql_min_mysql_geteuid_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_44_0",
+      "name": "mysql_min_mysql_getgid_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_45_0",
+      "name": "mysql_min_mysql_getrandom_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_66_0",
+      "name": "mysql_min_mysql_getrandom_missing_1_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_68_0",
+      "name": "mysql_min_mysql_getrusage_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_79_0",
+      "name": "mysql_min_mysql_gettid_getpriority_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_81_0",
+      "name": "mysql_min_mysql_getuid_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_94_0",
+      "name": "mysql_min_mysql_lseek_fallocate_33_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_97_0",
+      "name": "mysql_min_mysql_lseek_fallocate_72_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_98_0",
+      "name": "mysql_min_mysql_lseek_fallocate_7_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fallocate_99_0",
+      "name": "mysql_min_mysql_lseek_fallocate_92_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fcntl_17_0",
+      "name": "mysql_min_mysql_lseek_fcntl_1_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fcntl_20_0",
+      "name": "mysql_min_mysql_lseek_fcntl_8_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_fcntl_21_0",
-      "operations": [
-        1024
-      ]
-    },
-    {
-      "name": "mysql_min_mysql_lseek_fcntl_23_0",
+      "name": "mysql_min_mysql_lseek_fcntl_9_0",
       "operations": [
         1024
       ]
@@ -212,49 +326,103 @@
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_pwrite64_0_0",
+      "name": "mysql_min_mysql_lseek_pwrite64_2_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_pwrite64_24_0",
+      "name": "mysql_min_mysql_lseek_pwrite64_6_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_lseek_pwrite64_9_0",
+      "name": "mysql_min_mysql_lseek_read_1_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_newfstatat_getdents64_0_0",
+      "name": "mysql_min_mysql_madvise_missing_7_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_newfstatat_missing_0_0",
+      "name": "mysql_min_mysql_mmap_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_newfstatat_openat_0_0",
+      "name": "mysql_min_mysql_mprotect_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_openat_lseek_26_0",
+      "name": "mysql_min_mysql_mprotect_missing_1_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_pread64_fcntl_8_0",
+      "name": "mysql_min_mysql_munmap_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_newfstatat_faccessat_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_newfstatat_getdents64_2_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_newfstatat_missing_12_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_newfstatat_missing_130_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_newfstatat_missing_24_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_openat_fsync_3_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_openat_missing_3_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_openat_newfstatat_2_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_prctl_missing_0_0",
       "operations": [
         1024
       ]
@@ -266,7 +434,13 @@
       ]
     },
     {
-      "name": "mysql_min_mysql_pread64_write_29_0",
+      "name": "mysql_min_mysql_pread64_openat_13_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_prlimit64_missing_0_0",
       "operations": [
         1024
       ]
@@ -278,7 +452,7 @@
       ]
     },
     {
-      "name": "mysql_min_mysql_pwrite64_lseek_3_0",
+      "name": "mysql_min_mysql_pwrite64_lseek_2_0",
       "operations": [
         1024
       ]
@@ -290,31 +464,121 @@
       ]
     },
     {
-      "name": "mysql_min_mysql_read_openat_1_0",
+      "name": "mysql_min_mysql_pwrite64_openat_8_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_read_write_0_0",
+      "name": "mysql_min_mysql_read_openat_71_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_readlinkat_missing_14_0",
+      "name": "mysql_min_mysql_readlinkat_missing_36_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_readlinkat_missing_63_0",
+      "name": "mysql_min_mysql_rseq_missing_0_0",
       "operations": [
         1024
       ]
     },
     {
-      "name": "mysql_min_mysql_readlinkat_newfstatat_0_0",
+      "name": "mysql_min_mysql_rt_sigprocmask_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_rt_sigtimedwait_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_sched_getaffinity_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_sched_getaffinity_missing_7_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_sched_yield_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_setpriority_gettid_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_setsockopt_socket_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_sysinfo_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_syz_csb_thread_create_join_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_syz_reapply_affinity_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_times_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_umask_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_uname_missing_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_unlinkat_newfstatat_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_unlinkat_socket_0_0",
+      "operations": [
+        1024
+      ]
+    },
+    {
+      "name": "mysql_min_mysql_write_openat_0_0",
       "operations": [
         1024
       ]
@@ -327,10 +591,9 @@
       "force_stop": "True",
       "args": [
         "8000",
-        "3",
+        "2",
         "{homedir}/build/bench/network/client",
-        "{homedir}/bench/targets/mysql/syz/min_mysql_recvfrom_sendto_0_0.meta",
-        "{homedir}/bench/targets/mysql/syz/min_mysql_recvfrom_sendto_20_0.meta",
+        "{homedir}/bench/targets/mysql/syz/min_mysql_recvfrom_sendto_23_0.meta",
         "{homedir}/bench/targets/mysql/syz/min_mysql_recvfrom_sendto_32_0.meta"
       ]
     },
