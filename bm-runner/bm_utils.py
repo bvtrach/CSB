@@ -17,6 +17,7 @@ from utils.bm_builder import Builder
 import pandas as pd
 from typing import Any
 import subprocess
+from config.env_config import EnvUniversalConfig, UniversalConfig
 
 
 def resolve_path(path: PathType, use_in_container: bool = False) -> PathType:
@@ -222,6 +223,11 @@ def ensure_exists(
         else:
             bm_log(f"Environment variable: '{env_var_dir}' is not set", LogType.FATAL)
             sys.exit(1)
+    if (
+        EnvUniversalConfig.is_on(UniversalConfig.CSB_NO_BUILD_BENCH)
+        and Path(resolve_path(fname)).exists()
+    ):
+        return fname
     # try to build as a target if it a builtin-benchmark
     b = Builder()
     if b.target_exists(name):

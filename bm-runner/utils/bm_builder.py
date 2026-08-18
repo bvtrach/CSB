@@ -56,9 +56,10 @@ class Builder:
     def build_target(self, target):
         self.__clean_build_dir()
         self.__run_cmake_config()
-        for t in self.required_targets:
-            self.__build_target(t)
-        self.__build_target(target)
+        ts = self.required_targets.copy()
+        ts.append(target)
+        targets = " ".join(ts)
+        self.__build_target(targets)
 
     def __get_targets(self) -> set[str]:
         self.__run_cmake_config()
